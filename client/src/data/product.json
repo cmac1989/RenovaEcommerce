@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "image": "https://media.istockphoto.com/photos/blue-sneakers-isolated-on-white-background-picture-id1308274455?b=1&k=20&m=1308274455&s=170667a&w=0&h=S3UYmEJ1hUri2rB8jRhJ4wNY31lMrHysLHbl9YD8j_Q=",
+    "name": "No-name Brand",
+    "price": 178.99
+  },
+  {
+    "id": "2",
+    "image": "https://media.istockphoto.com/photos/white-sneaker-on-a-blue-gradient-background-mens-fashion-sport-shoe-picture-id1303978937?b=1&k=20&m=1303978937&s=170667a&w=0&h=az5Y96agxAdHt3XAv7PP9pThdiDpcQ3otWWn9YuJQRc=",
+    "name": "Trash",
+    "price": 12.99
+  },
+  {
+    "id": "3",
+    "image": "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8c2hvZXN8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
+    "name": "Nike",
+    "price": 1299.99
+  },
+  {
+    "id": "4",
+    "image": "https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8c2hvZXN8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60",
+    "name": "Mustard Nike",
+    "price": 1399.99
+  }
+]

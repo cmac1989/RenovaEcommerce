@@ -1,0 +1,17 @@
+form.contact-form {
+    margin-top: 3rem;
+    max-width: 500px;
+}
+label.form-label {
+    margin-top: 1rem;
+}
+form.contact-form .textarea.form-control {
+    margin-bottom: 200px;
+}
+button.btn.btn-primary {
+    margin-top: 15px;
+}
+span {
+    color: red;
+    font-family: sans-serif;
+}
