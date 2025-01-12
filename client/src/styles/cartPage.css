@@ -1,9 +1,6 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+div.cart-page {
+    padding: 0 80px;
 }
-
 .cart {
     display: flex;
     flex-direction: row;
