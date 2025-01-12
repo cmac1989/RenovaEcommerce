@@ -1,6 +1,5 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import {render} from "react-dom";
 
 function ProductModal(props) {
     return (

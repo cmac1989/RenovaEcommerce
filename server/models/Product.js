@@ -6,9 +6,9 @@ const Product = {
         const query = 'SELECT * FROM products';
         db.query(query, callback);
     },
-    create: (name, description, price, stock, imageUrl, category, callback) => {
-        const query = 'INSERT INTO products (name, description, price, stock, imageUrl, category) VALUES (?, ?, ?, ?, ?, ?)';
-        db.query(query, [name, description, price, stock, imageUrl, category], callback);
+    create: (name, description, price, imageUrl, stock, callback) => {
+        const query = 'INSERT INTO products (name, description, price, imageUrl, stock) VALUES (?, ?, ?, ?, ?)';
+        db.query(query, [name, description, price, imageUrl, stock], callback);
     }
 };
 

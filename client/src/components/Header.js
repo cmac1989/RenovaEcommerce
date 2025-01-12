@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import './header.css'
+import '../styles/header.css'
 import { CgShoppingCart } from 'react-icons/cg'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';

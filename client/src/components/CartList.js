@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import CartItem from './CartItem'
-import classes from '../pages/Cart.module.css'
+import classes from '../styles/cartPage.css'
 
 function CartList() {
   const cartItems = useSelector((state) => state.cart.items)

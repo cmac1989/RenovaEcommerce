@@ -2,9 +2,9 @@
 const db = require('../config/database');
 
 const Order = {
-    create: (userId, totalAmount, callback) => {
-        const query = 'INSERT INTO orders (userId, totalAmount) VALUES (?, ?)';
-        db.query(query, [userId, totalAmount], callback);
+    create: (userId, totalAmount, orderDate, orderStatus, callback) => {
+        const query = 'INSERT INTO orders (userId, totalAmount, orderDate, orderStatus) VALUES (?, ?, ?, ?)';
+        db.query(query, [userId, totalAmount, orderDate, orderStatus], callback);
     },
     getByUserId: (userId, callback) => {
         const query = 'SELECT * FROM orders WHERE userId = ?';

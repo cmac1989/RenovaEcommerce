@@ -1,15 +1,14 @@
 import React from 'react'
 import productData from '../data/product.json'
 import ProductItem from '../components/ProductItem'
-import classes from './Products.module.css'
-import ProductPagination from "../components/ProductPagination";
+import '../styles/products.css'
 
 function Products(props) {
 
   return (
-    <div>
+    <div className="products-page">
       <h1>Products</h1>
-        <ul className={classes.productList}>
+        <ul className="productList">
           {productData.map((product) => {
             return <ProductItem
               key={product.id}
@@ -20,7 +19,6 @@ function Products(props) {
             />
           })}
         </ul>
-      <ProductPagination />
     </div>
   )
 }
