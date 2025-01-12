@@ -10,6 +10,9 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // TODO Routes
+// app.use('/api/auth', authRoutes);
+// app.use('/api/products', productRoutes);
+// app.use('/api/orders', orderRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 5000;
