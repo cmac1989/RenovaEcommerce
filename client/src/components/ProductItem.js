@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
 import { cartActions } from '../store/cart-slice';
-import '../styles/products.css'
+import '../styles/productsPage.css'
 
 function ProductItem(props) {
     const dispatch = useDispatch()
@@ -25,7 +25,7 @@ function ProductItem(props) {
       <img src={props.image}></img>
       <div className="productName">{props.name}</div>
       <div className="productPrice">CAD ${props.price}</div>
-      <button className="btn" onClick={addToCartHandler}>
+      <button className="add-to-cart-btn" onClick={addToCartHandler}>
         Add to Cart
       </button>
     </li>

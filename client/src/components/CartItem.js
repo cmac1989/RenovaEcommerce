@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import classes from '../styles/cartPage.css';
+import '../styles/cartPage.css';
 import { cartActions } from '../store/cart-slice';
 
 
@@ -19,21 +19,21 @@ function CartItem(props) {
   }
 
   return (
-        <div className={classes.productItem}>
+        <div className="productItem">
           <img src={props.item.image}/>
-            <div className={classes.firstRow}>
-              <div className={classes.itemName}>{props.item.name}</div>
-              <div className={classes.itemAmount}>
+            <div className="firstRow">
+              <div className="itemName">{props.item.name}</div>
+              <div className="itemAmount">
                 <p>x{props.item.quantity}</p>
-                <div className={classes.itemBtns}>
+                <div className="itemBtns">
                   <button onClick={removeFromCartHandler}>-</button>
                   <button onClick={addToCartHandler}>+</button>
                 </div>
               </div>
             </div>
-            <div className={classes.secondRow}>
-              <div className={classes.itemPrice}>CAD${props.item.totalPrice.toFixed(2)}</div>
-              <div className={classes.pricePerItem}>${props.item.price}/item</div>
+            <div className="secondRow">
+              <div className="itemPrice">CAD${props.item.totalPrice.toFixed(2)}</div>
+              <div className="pricePerItem">${props.item.price}/item</div>
             </div>
           </div>
   )

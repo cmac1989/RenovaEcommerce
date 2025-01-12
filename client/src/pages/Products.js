@@ -1,7 +1,7 @@
 import React from 'react'
 import productData from '../data/product.json'
 import ProductItem from '../components/ProductItem'
-import '../styles/products.css'
+import '../styles/productsPage.css'
 
 function Products(props) {
 
