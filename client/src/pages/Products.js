@@ -2,8 +2,6 @@ import React from 'react'
 import productData from '../data/product.json'
 import ProductItem from '../components/ProductItem'
 import classes from './Products.module.css'
-import {PageItem} from "react-bootstrap";
-import Pagination from "react-bootstrap/Pagination";
 import ProductPagination from "../components/ProductPagination";
 
 function Products(props) {
