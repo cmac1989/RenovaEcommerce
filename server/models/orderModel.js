@@ -1,7 +1,6 @@
-// models/Order.js
 const db = require('../config/database');
 
-const Order = {
+const orderModel = {
     create: (userId, totalAmount, orderDate, orderStatus, callback) => {
         const query = 'INSERT INTO orders (userId, totalAmount, orderDate, orderStatus) VALUES (?, ?, ?, ?)';
         db.query(query, [userId, totalAmount, orderDate, orderStatus], callback);
@@ -12,4 +11,4 @@ const Order = {
     }
 };
 
-module.exports = Order;
+module.exports = orderModel;

@@ -1,7 +1,6 @@
-// models/Product.js
 const db = require('../config/database');
 
-const Product = {
+const productModel = {
     getAll: (callback) => {
         const query = 'SELECT * FROM products';
         db.query(query, callback);
@@ -12,4 +11,4 @@ const Product = {
     }
 };
 
-module.exports = Product;
+module.exports = productModel;

@@ -1,7 +1,6 @@
-// models/User.js
 const db = require('../config/database');
 
-const User = {
+const userModel = {
     findByEmail: (email, callback) => {
         const query = 'SELECT * FROM users WHERE email = ?';
         db.query(query, [email], callback);
@@ -12,4 +11,4 @@ const User = {
     }
 };
 
-module.exports = User;
+module.exports = userModel;
