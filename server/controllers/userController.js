@@ -14,7 +14,7 @@ exports.register = (req, res) => {
     });
 };
 
-userModel.login = (req, res) => {
+exports.login = (req, res) => {
     const { email, password } = req.body;
 
     userModel.findByEmail(email, (err, result) => {
