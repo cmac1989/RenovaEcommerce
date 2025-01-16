@@ -9,5 +9,5 @@ export const getProducts = () => {
     return API.get("/products");
 }
 export const addProduct = (product) => {
-    return API.post("/products", product);
+    return API.post("/cart", product);
 }

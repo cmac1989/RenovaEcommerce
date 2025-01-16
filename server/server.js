@@ -17,6 +17,7 @@ db.connect();
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use(cors({ origin: '*' }));
 
 // Routes
 app.use('/user', userRoutes);
@@ -25,15 +26,14 @@ app.use('/orders', orderRoutes);
 app.use('/orderItems', orderItemRoutes);
 app.use('/cart', cartRoutes);
 
+
 // Global error handler for unknown routes
 app.use((req, res, next) => {
     res.status(404).json({ message: 'Route not found' });
 });
 
-
-
 // Start the server
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
