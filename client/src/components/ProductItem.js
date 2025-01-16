@@ -1,35 +1,62 @@
-import React from 'react'
-import { useDispatch } from 'react-redux';
-import { cartActions } from '../store/cart-slice';
+import React, {useEffect, useState} from 'react'
 import '../styles/productsPage.css'
+import { getProducts, addProduct } from "../services/api";
 
-function ProductItem(props) {
-    const dispatch = useDispatch()
+function ProductItem() {
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const { name, price, id, image } = props
+    useEffect(() => {
+        // Fetch products when the component mounts
+        getProducts()
+            .then((response) => {
+                setProducts(response.data);// Store products in state
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error('Error fetching products:', error);
+                setLoading(false);
+            });
+    }, []);
 
-    const addToCartHandler = () => {
-        dispatch(cartActions.addToCart({
-          id,
-          name,
-          price,
-          image,
-        }))
-        return (
-            <productModal />
-        )
-      }
-
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+    const addToCartHandler = (product) => {
+        const productData = {
+            user_id: 1,  // Get the logged-in user's ID
+            product_id: product.id,
+            quantity: 1,  // Default quantity (you can adjust this based on user input)
+        };
+        console.log('Sending data to backend:', productData);
+        addProduct(productData).then(response => {
+            console.log('Product added to cart:', response);
+        }).catch(error => {
+            console.error('Error adding product:', error);
+        });
+    };
   return (
-    <li className="productItem">
-      <img src={props.image}></img>
-      <div className="productName">{props.name}</div>
-      <div className="productPrice">CAD ${props.price}</div>
-      <button className="add-to-cart-btn" onClick={addToCartHandler}>
-        Add to Cart
-      </button>
-    </li>
+      <ul className="productList">
+      {products.map((product) => (
+              <li key={product.id} className="productItem">
+                  <img src={`/images/${product.image}`} alt={product.name}/>
+
+                  <div className="productName">
+                      <h3>{product.name}</h3>
+                  </div>
+                  <div className="productPrice">
+                      CAD ${product.price}
+                      <p>{product.description}</p>
+                  </div>
+                    <button className="addToCart" onClick={() => addToCartHandler(product)}>
+                        Add to Cart
+                    </button>
+              </li>
+          )
+          )}
+          </ul>
   )
+
 }
 
 export default ProductItem
