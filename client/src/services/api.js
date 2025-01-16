@@ -8,3 +8,6 @@ const API = axios.create({
 export const getProducts = () => {
     return API.get("/products");
 }
+export const addProduct = (product) => {
+    return API.post("/products", product);
+}

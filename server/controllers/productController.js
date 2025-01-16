@@ -10,9 +10,9 @@ exports.getAllProducts = (req, res) => {
 };
 
 exports.addProduct = (req, res) => {
-    const { name, description, price, imageUrl, stock} = req.body;
+    const { name, description, price, image, stock_quantity, created_at, updated_at} = req.body;
 
-    Product.create(name, description, price, imageUrl, stock, (err, result) => {
+    Product.create(name, description, price, image, stock_quantity, created_at, updated_at, (err, result) => {
         if (err) {
             return res.status(500).json({ error: 'Error adding product' });
         }

@@ -1,13 +1,13 @@
 const db = require('../config/database');
 
 const orderModel = {
-    create: (userId, totalAmount, orderDate, orderStatus, callback) => {
-        const query = 'INSERT INTO orders (userId, totalAmount, orderDate, orderStatus) VALUES (?, ?, ?, ?)';
-        db.query(query, [userId, totalAmount, orderDate, orderStatus], callback);
+    create: (id, userId, total_price, status, created_at, updated_at, callback) => {
+        const query = 'INSERT INTO orders (id, userId, total_price, status) VALUES (?, ?, ?, ?)';
+        db.query(query, [id, userId, total_price, status], callback);
     },
-    getByUserId: (userId, callback) => {
+    getByUserId: (id, callback) => {
         const query = 'SELECT * FROM orders WHERE userId = ?';
-        db.query(query, [userId], callback);
+        db.query(query, [id], callback);
     }
 };
 

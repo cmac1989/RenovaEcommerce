@@ -5,6 +5,8 @@ const db = require("../server/config/database");
 const userRoutes = require('./routes/user');
 const productRoutes = require('./routes/product');
 const orderRoutes = require('./routes/order');
+const orderItemRoutes = require('./routes/orderItem');
+const cartRoutes = require('./routes/cart');
 
 require('dotenv').config();
 
@@ -17,9 +19,11 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Routes
-app.use('/api/user', userRoutes);
+app.use('/user', userRoutes);
 app.use('/products', productRoutes);
-app.use('/api/orders', orderRoutes);
+app.use('/orders', orderRoutes);
+app.use('/orderItems', orderItemRoutes);
+app.use('/cart', cartRoutes);
 
 // Global error handler for unknown routes
 app.use((req, res, next) => {

@@ -5,9 +5,9 @@ const userModel = {
         const query = 'SELECT * FROM users WHERE email = ?';
         db.query(query, [email], callback);
     },
-    create: (email, hashedPassword, role, created_at, callback) => {
-        const query = 'INSERT INTO users (email, password, role, created_at) VALUES (?, ?)';
-        db.query(query, [email, hashedPassword, role, created_at], callback);
+    create: (id, username, email, password, callback) => {
+        const query = 'INSERT INTO users (id, username, email, password) VALUES (?, ?)';
+        db.query(query, [id, username, email, password], callback);
     }
 };
 
