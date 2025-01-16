@@ -26,7 +26,7 @@ function ProductItem() {
         const productData = {
             user_id: 1,  // Get the logged-in user's ID
             product_id: product.id,
-            quantity: 2,  // Default quantity (you can adjust this based on user input)
+            quantity: 1,  // Default quantity (you can adjust this based on user input)
         };
         console.log('Sending data to backend:', productData);
         addProduct(productData).then(response => {
