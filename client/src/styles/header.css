@@ -45,3 +45,19 @@ div.headerNav2 {
     text-align: right;
     width: 40%;
 }
+
+@media screen and (max-width: 780px) {
+    div.header {
+        height: 80px;
+    }
+    div.headerNav {
+        display: none;
+    }
+    div.headerNav2 {
+        display: none;
+    }
+    div.headerLogo {
+        width: 100%;
+        padding-bottom: 15px;
+    }
+}
