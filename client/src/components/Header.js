@@ -12,7 +12,19 @@ function Header() {
   return (
     <div className="header">
         <div className="banner">PLACEHOLDER</div>
+        <div className="headerContent">
+            <div className="headerNav">
+                <NavLink to='/home' className="header-nav-link">Home</NavLink>
+                <NavLink to='/products' className="header-nav-link">Products</NavLink>
+                <NavLink to='/contact' className="header-nav-link">Contact</NavLink>
+            </div>
+            <div className="headerLogo">LOGO</div>
+            <div className="headerNav2">
+                <NavLink to='/cart' className="header-nav-link"> {cartQuantity} {<CgShoppingCart />}</NavLink>
+            </div>
+        </div>
     </div>
+
     //   <Navbar expand="lg" className="bg-body-tertiary">
     //       <Container>
     //           <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
