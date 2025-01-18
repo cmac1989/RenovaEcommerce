@@ -14,37 +14,17 @@ function Header() {
         <div className="banner">PLACEHOLDER</div>
         <div className="headerContent">
             <div className="headerNav">
-                <NavLink to='/home' className="header-nav-link">Home</NavLink>
-                <NavLink to='/products' className="header-nav-link">Products</NavLink>
-                <NavLink to='/contact' className="header-nav-link">Contact</NavLink>
+                <NavLink to='/home'>Home</NavLink>
+                <NavLink to='/products'>Products</NavLink>
+                <NavLink to='/contact'>Contact</NavLink>
             </div>
             <div className="headerLogo">LOGO</div>
             <div className="headerNav2">
-                <NavLink to='/cart' className="header-nav-link"> {cartQuantity} {<CgShoppingCart />}</NavLink>
+                <NavLink>Sign in</NavLink>
+                <NavLink to='/cart'> {cartQuantity} {<CgShoppingCart />}</NavLink>
             </div>
         </div>
     </div>
-
-    //   <Navbar expand="lg" className="bg-body-tertiary">
-    //       <Container>
-    //           <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
-    //           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-    //           <Navbar.Collapse id="basic-navbar-nav">
-    //               <Nav className="me-auto classes.header">
-    //                   <Nav.Link href="#home"><NavLink to='/home' className="header-nav-link">Home</NavLink></Nav.Link>
-    //                   <Nav.Link href="#products"><NavLink to='/products' className="header-nav-link">Products</NavLink></Nav.Link>
-    //                   <Nav.Link href="#contact"><NavLink to='/contact' className="header-nav-link">Contact</NavLink></Nav.Link>
-    //                   <Nav.Link href="#cart"><NavLink to='/cart' className="header-nav-link"> {cartQuantity} {<CgShoppingCart />}</NavLink></Nav.Link>
-    //               </Nav>
-    //           </Navbar.Collapse>
-    //       </Container>
-    //   </Navbar>
-    // <div className={classes.header}>
-    //     <NavLink to='/home' className={(navData) => navData.isActive ? classes.active : ''}>Home</NavLink>
-    //     <NavLink to='/products' className={(navData) => navData.isActive ? classes.active : ''}>Products</NavLink>
-    //     <NavLink to='/contact' className={(navData) => navData.isActive ? classes.active : ''}>Contact</NavLink>
-    //     <NavLink to='/cart' className={(navData) => navData.isActive ? classes.active : ''}> {cartQuantity} {<CgShoppingCart />}</NavLink>
-    // </div>
   );
 }
 

@@ -1,5 +1,6 @@
 div.header {
     height: 100px;
+    border-bottom: 1px solid rgb(213, 213, 213);
 }
 
 div.banner {
