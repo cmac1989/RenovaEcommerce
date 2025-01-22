@@ -68,9 +68,21 @@
 const Cart = require('../models/cartModel');
 
 exports.getAllCartItems = (req, res) => {
-    Cart.getAll((err, results) => {
+    const userId = req.user ? req.user.id : null;
+    console.log(userId);
+
+    if(!userId) {
+        console.error("User ID not found in JWT");
+        return res.status(400).send({ error: 'userId is required' });
+    }
+    console.log("Fetching cart items for userId:", userId);
+    Cart.getItems(userId,(err, results) => {
         if (err) {
+            console.error("Error fetching cart items:", err);
             return res.status(500).json({ error: 'Error fetching cart items' });
+        }
+        if (results.length === 0) {
+            return res.status(200).json([]); // Empty cart response
         }
         res.json(results);
     });

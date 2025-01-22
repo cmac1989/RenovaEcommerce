@@ -28,6 +28,36 @@
 
 const db = require('../config/database');
 
+const getItems = (userId, callback) => {
+    console.log(userId)
+    const query = `
+    SELECT 
+      ci.id AS cart_item_id,
+      ci.quantity,
+      p.id AS product_id,
+      p.name AS product_name,
+      p.description AS product_description,
+      p.price AS product_price,
+      p.image AS product_image,
+      p.stock_quantity AS product_stock_quantity
+    FROM 
+      cart_items ci
+    JOIN 
+      products p ON ci.product_id = p.id
+    WHERE 
+      ci.user_id = ?;
+  `;
+
+    console.log('Executing query with userId:', userId);
+    db.query(query, [userId], (err, result) => {
+        if (err) {
+            console.error("Error executing query:", err);
+            return callback(err, null);
+        }
+        callback(null, result);
+    });
+};
+
 // Check if product already exists in the cart for the user
 const checkIfProductExists = (user_id, product_id, callback) => {
     const query = 'SELECT * FROM cart_items WHERE user_id = ? AND product_id = ?';
@@ -51,6 +81,7 @@ const create = (user_id, product_id, quantity, callback) => {
 
 // Export the model methods
 module.exports = {
+    getItems,
     checkIfProductExists,
     updateQuantity,
     create

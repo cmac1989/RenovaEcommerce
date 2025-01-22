@@ -26,7 +26,6 @@ app.use('/orders', orderRoutes);
 app.use('/orderItems', orderItemRoutes);
 app.use('/cart', cartRoutes);
 
-
 // Global error handler for unknown routes
 app.use((req, res, next) => {
     res.status(404).json({ message: 'Route not found' });

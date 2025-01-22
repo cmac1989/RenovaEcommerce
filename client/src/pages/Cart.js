@@ -11,9 +11,10 @@ function Cart() {
     <div className={classes.cart}>
         <div>
           <div>
-            {cartIsEmpty && <p>No Items to display</p>}
-            {console.log(cartIsEmpty)}
-            {!cartIsEmpty && <CartList />}
+            {/*{cartIsEmpty && <p>No Items to display</p>}*/}
+            {/*{console.log(cartIsEmpty)}*/}
+            {/*{!cartIsEmpty && <CartList />}*/}
+              <CartList/>
           </div>
         </div> 
     </div>
