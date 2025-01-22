@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from 'react'
-import '../styles/productsPage.css'
+import React, { useEffect, useState } from 'react';
+import '../styles/productsPage.css';
 import { getProducts, addProduct } from "../services/api";
+import Spinner from '../components/Spinner';
 
 function ProductItem() {
     const [products, setProducts] = useState([]);
@@ -10,18 +11,28 @@ function ProductItem() {
         // Fetch products when the component mounts
         getProducts()
             .then((response) => {
-                setProducts(response.data);// Store products in state
-                setLoading(false);
+                setProducts(response.data);  // Store products in state
+
+                // Set a delay so the spinner stays visible for at least 1 second
+                setTimeout(() => {
+                    setLoading(false);
+                }, 200);  // Adjust this value to make the spinner visible longer
             })
             .catch((error) => {
                 console.error('Error fetching products:', error);
-                setLoading(false);
+                setLoading(false); // Stop loading if there's an error
             });
     }, []);
 
     if (loading) {
-        return <p>Loading...</p>;
+        return (
+            //TODO put styles in external stylesheet
+            <div className="product-list" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "60vh" }}>
+                <Spinner />
+            </div>
+        );
     }
+
     const addToCartHandler = (product) => {
         const productData = {
             user_id: 1,  // Get the logged-in user's ID
@@ -35,29 +46,26 @@ function ProductItem() {
             console.error('Error adding product:', error);
         });
     };
-  return (
-      <ul className="productList">
-      {products.map((product) => (
-              <li key={product.id} className="productItem">
-                  <img src={`/images/${product.image}`} alt={product.name}/>
 
-                  <div className="productName">
-                      <h3>{product.name}</h3>
-                  </div>
-                  <div className="productPrice">
-                      CAD ${product.price}
-                      <p>{product.description}</p>
-                  </div>
-                    <button className="addToCart" onClick={() => addToCartHandler(product)}>
+    return (
+        <ul className="productList">
+            {products.map((product) => (
+                <li key={product.id} className="productItem">
+                    <img src={`/images/${product.image}`} alt={product.name} />
+                    <div className="productName">
+                        <h3>{product.name}</h3>
+                    </div>
+                    <div className="productPrice">
+                        CAD ${product.price}
+                        <p>{product.description}</p>
+                    </div>
+                    <button className="add-to-cart-btn" onClick={() => addToCartHandler(product)}>
                         Add to Cart
                     </button>
-              </li>
-          )
-          )}
-          </ul>
-  )
-
+                </li>
+            ))}
+        </ul>
+    );
 }
 
-export default ProductItem
-
+export default ProductItem;
