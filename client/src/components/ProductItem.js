@@ -1,51 +1,54 @@
-import React, { useEffect, useState } from 'react';
-import '../styles/productsPage.css';
-import { getProducts, addProduct } from "../services/api";
+import React, { useState, useEffect } from 'react';
+import { getProducts, addProduct } from '../services/api';
+import { useCart } from '../providers/CartContext';
 import Spinner from '../components/Spinner';
+import '../styles/productsPage.css';
 
 function ProductItem() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { updateCartQuantity } = useCart();  // Get the update function from context
 
     useEffect(() => {
-        // Fetch products when the component mounts
         getProducts()
             .then((response) => {
-                setProducts(response.data);  // Store products in state
-
-                // Set a delay so the spinner stays visible for at least 1 second
-                setTimeout(() => {
-                    setLoading(false);
-                }, 200);  // Adjust this value to make the spinner visible longer
+                setProducts(response.data);
+                setTimeout(() => setLoading(false), 100);  // Show spinner for 200ms
             })
             .catch((error) => {
                 console.error('Error fetching products:', error);
-                setLoading(false); // Stop loading if there's an error
+                setLoading(false);
             });
     }, []);
 
+    const addToCartHandler = (product) => {
+        const productData = {
+            //TODO change user_id to something more dynamic
+            user_id: 1,  // Simulating logged-in user ID
+            product_id: product.id,
+            quantity: 1,
+        };
+        addProduct(productData)
+            .then(() => {
+                // Update the cart quantity both in context and localStorage
+                let currentQuantity = parseInt(localStorage.getItem('cartQuantity'), 10) || 0;
+                const newQuantity = currentQuantity + 1;
+                updateCartQuantity(newQuantity);  // Update context
+                localStorage.setItem('cartQuantity', newQuantity);  // Persist in localStorage
+            })
+            .catch((error) => {
+                console.error('Error adding product:', error);
+            });
+    };
+
     if (loading) {
+        //TODO put styles in external stylesheet
         return (
-            //TODO put styles in external stylesheet
             <div className="product-list" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "60vh" }}>
                 <Spinner />
             </div>
         );
     }
-
-    const addToCartHandler = (product) => {
-        const productData = {
-            user_id: 1,  // Get the logged-in user's ID
-            product_id: product.id,
-            quantity: 1,  // Default quantity (you can adjust this based on user input)
-        };
-        console.log('Sending data to backend:', productData);
-        addProduct(productData).then(response => {
-            console.log('Product added to cart:', response);
-        }).catch(error => {
-            console.error('Error adding product:', error);
-        });
-    };
 
     return (
         <ul className="productList">

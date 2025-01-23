@@ -1,6 +1,12 @@
 div.products-page h1 {
     padding: 0 80px;
 }
+/*div.product_list {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    height: 60vh;*/
+/*}*/
 
 .productList {
     list-style-type: none;

@@ -11,7 +11,6 @@ function CartList() {
         // Fetch cart items when the component mounts
         getCartItems()
             .then((response) => {
-                console.log(response);
                 setCartItems(response);  // Store items in state
 
                 // Set a delay so the spinner stays visible for at least 1 second
@@ -48,7 +47,6 @@ function CartList() {
         <div>
         <ul className="productList">
             {cartItems.map((item) => {
-                console.log("Rendering item:", item);  // Debugging line to check each item
                 return (
                     <li key={item.cart_item_id} className="productItem">
                         <img src={`/images/${item.product_image}`} alt={item.product_name} />
@@ -61,7 +59,7 @@ function CartList() {
                             <p>Quantity: {item.quantity}</p>
                         </div>
                         <button className="add-to-cart-btn">
-                            Add to Cart
+                            Remove From Cart
                         </button>
                     </li>
                 );
