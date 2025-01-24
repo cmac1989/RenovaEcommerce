@@ -14,7 +14,7 @@ function Header() {
         <div className="banner">PLACEHOLDER</div>
         <div className="headerContent">
             <div className="headerNav">
-                <NavLink to='/home'>Home</NavLink>
+                <NavLink to='/'>Home</NavLink>
                 <NavLink to='/products'>Products</NavLink>
                 <NavLink to='/contact'>Contact</NavLink>
             </div>
