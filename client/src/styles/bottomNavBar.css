@@ -6,8 +6,16 @@
     bottom: 0;
 }
 
+.bottomNav a {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+    padding-top: 15px;
+}
+
 @media screen and (max-width: 780px) {
-    .bottomNav{
-        display: block;
+    .bottomNav {
+        display: flex;
+        justify-content: space-around;
     }
 }
