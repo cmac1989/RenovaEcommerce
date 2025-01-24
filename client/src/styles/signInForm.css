@@ -1,0 +1,14 @@
+form.signIn-form {
+  margin-top: 3rem;
+  max-width: 500px;
+}
+label.form-label {
+  margin-top: 1rem;
+}
+button.btn.btn-primary {
+  margin-top: 15px;
+}
+span {
+  color: red;
+  font-family: sans-serif;
+}
