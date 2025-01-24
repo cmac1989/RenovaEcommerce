@@ -11,6 +11,13 @@
     text-align: center;
     box-sizing: border-box;
     padding-top: 15px;
+
+    text-decoration: none;
+    color: #000;
+}
+
+.bottomNav a:hover {
+    color: #7b7b7b;
 }
 
 @media screen and (max-width: 780px) {
