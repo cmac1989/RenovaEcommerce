@@ -1,0 +1,13 @@
+.bottomNav {
+    display: none;
+    height: 60px;
+    border-top: 1px solid rgb(213, 213, 213);
+    position: sticky;
+    bottom: 0;
+}
+
+@media screen and (max-width: 780px) {
+    .bottomNav{
+        display: block;
+    }
+}

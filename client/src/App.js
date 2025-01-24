@@ -6,6 +6,7 @@ import Products from './pages/Products'
 import Contact from './pages/Contact';
 import Cart from './pages/Cart';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import BottomNavBar from './components/BottomNavBar';
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                 <Route path='/contact' element={<Contact />} />
                 <Route path='/cart' element={<Cart />} />
             </Routes>
+            <BottomNavBar />
         </div>
     );
 }
