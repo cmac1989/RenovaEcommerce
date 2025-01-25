@@ -7,6 +7,7 @@ const productRoutes = require('./routes/product');
 const orderRoutes = require('./routes/order');
 const orderItemRoutes = require('./routes/orderItem');
 const cartRoutes = require('./routes/cart');
+const stripeRoutes = require('./routes/stripe')
 
 require('dotenv').config();
 
@@ -25,6 +26,7 @@ app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
 app.use('/orderItems', orderItemRoutes);
 app.use('/cart', cartRoutes);
+app.use('/stripe', stripeRoutes);
 
 // Global error handler for unknown routes
 app.use((req, res, next) => {
