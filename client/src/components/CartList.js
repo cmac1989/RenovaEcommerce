@@ -25,26 +25,6 @@ function CartList() {
                 setLoading(false); // Stop loading if there's an error
             });
     }, []);
-    // const removeFromCartHandler = (item) => {
-    //     // removeCartItem({cart_item_id: item.cart_item_id})
-    //     console.log(item);
-    //
-    //     removeCartItem({
-    //         cart_item_id: item.cart_item_id,
-    //         product_id: item.product_id,
-    //         quantity: item.quantity
-    //     })
-    //         .then(() => {
-    //             // Update the cart quantity both in context and localStorage
-    //             let currentQuantity = parseInt(localStorage.getItem('cartQuantity'), 10) || 0;
-    //             const newQuantity = currentQuantity - 1;
-    //             updateCartQuantity(newQuantity);  // Update context
-    //             localStorage.setItem('cartQuantity', newQuantity);  // Persist in localStorage
-    //         })
-    //         .catch((error) => {
-    //             console.error('Error removing cart item:', error);
-    //         });
-    // };
 
     const removeFromCartHandler = (item) => {
         console.log(item);
@@ -102,8 +82,6 @@ function CartList() {
                 });
         }
     };
-
-
     // Logic for spinner
     if (loading) {
         return (
