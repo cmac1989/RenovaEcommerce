@@ -1,11 +1,13 @@
 import '../styles/cartPage.css'
 import React, { useEffect, useState } from "react";
-import { getCartItems } from "../services/api";
+import {getCartItems, removeCartItem} from "../services/api";
 import Spinner from "./Spinner";
+import {useCart} from "../providers/CartContext";
 
 function CartList() {
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { updateCartQuantity } = useCart();
 
     useEffect(() => {
         // Fetch cart items when the component mounts
@@ -23,6 +25,84 @@ function CartList() {
                 setLoading(false); // Stop loading if there's an error
             });
     }, []);
+    // const removeFromCartHandler = (item) => {
+    //     // removeCartItem({cart_item_id: item.cart_item_id})
+    //     console.log(item);
+    //
+    //     removeCartItem({
+    //         cart_item_id: item.cart_item_id,
+    //         product_id: item.product_id,
+    //         quantity: item.quantity
+    //     })
+    //         .then(() => {
+    //             // Update the cart quantity both in context and localStorage
+    //             let currentQuantity = parseInt(localStorage.getItem('cartQuantity'), 10) || 0;
+    //             const newQuantity = currentQuantity - 1;
+    //             updateCartQuantity(newQuantity);  // Update context
+    //             localStorage.setItem('cartQuantity', newQuantity);  // Persist in localStorage
+    //         })
+    //         .catch((error) => {
+    //             console.error('Error removing cart item:', error);
+    //         });
+    // };
+
+    const removeFromCartHandler = (item) => {
+        console.log(item);
+
+        // If the quantity is greater than 1, decrease the quantity
+        if (item.quantity > 1) {
+            const updatedQuantity = item.quantity - 1;
+
+            // Call the API to update the quantity
+            removeCartItem({
+                cart_item_id: item.cart_item_id,
+                product_id: item.product_id,
+                quantity: 1, // Decrease by 1
+            })
+                .then(() => {
+                    // Update the cart locally
+                    setCartItems((prevItems) =>
+                        prevItems.map((prevItem) =>
+                            prevItem.cart_item_id === item.cart_item_id
+                                ? { ...prevItem, quantity: updatedQuantity }
+                                : prevItem
+                        )
+                    );
+
+                    // Update the cart quantity both in context and localStorage
+                    let currentQuantity = parseInt(localStorage.getItem('cartQuantity'), 10) || 0;
+                    const newQuantity = currentQuantity - 1;
+                    updateCartQuantity(newQuantity); // Update context
+                    localStorage.setItem('cartQuantity', newQuantity); // Persist in localStorage
+                })
+                .catch((error) => {
+                    console.error('Error updating cart item quantity:', error);
+                });
+        } else {
+            // If the quantity is 1, delete the item
+            removeCartItem({
+                cart_item_id: item.cart_item_id,
+                product_id: item.product_id,
+                quantity: 1, // Indicate that we're removing one
+            })
+                .then(() => {
+                    // Remove the item from the cart locally
+                    setCartItems((prevItems) =>
+                        prevItems.filter((prevItem) => prevItem.cart_item_id !== item.cart_item_id)
+                    );
+
+                    // Update the cart quantity both in context and localStorage
+                    let currentQuantity = parseInt(localStorage.getItem('cartQuantity'), 10) || 0;
+                    const newQuantity = currentQuantity - 1;
+                    updateCartQuantity(newQuantity); // Update context
+                    localStorage.setItem('cartQuantity', newQuantity); // Persist in localStorage
+                })
+                .catch((error) => {
+                    console.error('Error removing cart item:', error);
+                });
+        }
+    };
+
 
     // Logic for spinner
     if (loading) {
@@ -58,7 +138,7 @@ function CartList() {
                             <p>{item.product_description}</p>
                             <p>Quantity: {item.quantity}</p>
                         </div>
-                        <button className="add-to-cart-btn">
+                        <button className="add-to-cart-btn" onClick={() => removeFromCartHandler(item)}>
                             Remove From Cart
                         </button>
                     </li>
