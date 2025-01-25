@@ -3,10 +3,13 @@ import { getProducts, addProduct } from '../services/api';
 import { useCart } from '../providers/CartContext';
 import Spinner from '../components/Spinner';
 import '../styles/productsPage.css';
+import ProductAddModal from "./ProductAddModal";
 
 function ProductItem() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [showModal, setShowModal] = useState(false);
+    const [modalContent, setModalContent] = useState({});
     const { updateCartQuantity } = useCart();  // Get the update function from context
 
     useEffect(() => {
@@ -35,6 +38,13 @@ function ProductItem() {
                 const newQuantity = currentQuantity + 1;
                 updateCartQuantity(newQuantity);  // Update context
                 localStorage.setItem('cartQuantity', newQuantity);  // Persist in localStorage
+                //Set content for modal
+                setModalContent({
+                    title: "Product Added to Cart",
+                    message: `${product.name} has been successfully added to your cart.`,
+                    image: `/images/${product.image}`,
+                });
+                setShowModal(true)
             })
             .catch((error) => {
                 console.error('Error adding product:', error);
@@ -49,8 +59,8 @@ function ProductItem() {
             </div>
         );
     }
-
     return (
+        <div>
         <ul className="productList">
             {products.map((product) => (
                 <li key={product.id} className="productItem">
@@ -68,6 +78,14 @@ function ProductItem() {
                 </li>
             ))}
         </ul>
+            <ProductAddModal
+                show={showModal}
+                onHide={() => setShowModal(false)}
+                title={modalContent.title}
+                message={modalContent.message}
+                image={modalContent.image}
+            />
+    </div>
     );
 }
 

@@ -26,7 +26,8 @@ div.products-page h1 {
 
 .productItem img {
     max-width: 304px;
-    min-height: 300px;
+    /*max-height: 300px;*/
+    /*min-height: 300px;*/
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
 }
