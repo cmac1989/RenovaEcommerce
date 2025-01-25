@@ -3,10 +3,13 @@ import React, { useEffect, useState } from "react";
 import {getCartItems, removeCartItem} from "../services/api";
 import Spinner from "./Spinner";
 import {useCart} from "../providers/CartContext";
+import ProductModal from "./ProductModal";
 
 function CartList() {
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [showModal, setShowModal] = useState(false);
+    const [modalContent, setModalContent] = useState({});
     const { updateCartQuantity } = useCart();
 
     useEffect(() => {
@@ -28,6 +31,11 @@ function CartList() {
 
     const removeFromCartHandler = (item) => {
         console.log(item);
+        setShowModal(true);
+        setModalContent({
+            title: `Removed ${item.product_name}`,
+            message: `Removed ${item.product_name} from cart`,
+        });
 
         // If the quantity is greater than 1, decrease the quantity
         if (item.quantity > 1) {
@@ -126,6 +134,13 @@ function CartList() {
             <div className="total-cost">
                 <h3>Total Cost Before HST and Shipping: CAD ${totalCost.toFixed(2)}</h3>
             </div>
+            <ProductModal
+                show={showModal}
+                onHide={() => setShowModal(false)}
+                title={modalContent.title}
+                message={modalContent.message}
+                image={modalContent.image}
+            />
         </div>
     );
 }

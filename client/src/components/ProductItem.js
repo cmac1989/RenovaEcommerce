@@ -3,7 +3,7 @@ import { getProducts, addProduct } from '../services/api';
 import { useCart } from '../providers/CartContext';
 import Spinner from '../components/Spinner';
 import '../styles/productsPage.css';
-import ProductAddModal from "./ProductAddModal";
+import ProductModal from "./ProductModal";
 
 function ProductItem() {
     const [products, setProducts] = useState([]);
@@ -78,7 +78,7 @@ function ProductItem() {
                 </li>
             ))}
         </ul>
-            <ProductAddModal
+            <ProductModal
                 show={showModal}
                 onHide={() => setShowModal(false)}
                 title={modalContent.title}
