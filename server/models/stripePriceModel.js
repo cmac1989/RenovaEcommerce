@@ -25,6 +25,23 @@ class StripePrice{
             console.log(`Error in stripePriceModel.js function create: ${error.message}`)
         }
     }
+    
+    async update(){
+        try{
+
+            // The only property which the api allows for updating is weather the price is active or not
+            // Update active property of price
+            await stripe.prices.update(
+                this.id,
+                {
+                  active: this.active
+                }
+            )
+        }
+        catch (error){
+            console.log(`Error in stripePriceModel.js function update: ${error.message}`)
+        }
+    }
 }
 
 module.exports = StripePrice
