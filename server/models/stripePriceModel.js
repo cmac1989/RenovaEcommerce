@@ -14,6 +14,7 @@ class StripePrice{
 
             // Create stripe price object
             const price = await stripe.prices.create({
+                // TODO: Add support for multiple currencies 
                 currency: "cad",
                 unit_amount: unitAmount * 100, // Convert price from dollars to cents
                 product: productId
@@ -25,7 +26,23 @@ class StripePrice{
             console.log(`Error in stripePriceModel.js function create: ${error.message}`)
         }
     }
+
+    static async findById(id){
+        try{
+
+            const price = await stripe.prices.retrieve(id);
+            return new StripePrice(
+                id, 
+                price.unit_amount / 100, // Convert price from cents to dollars
+                price.id
+            )
+        }
+        catch (error){
+            console.log(`Error in stripePriceModel.js function findById: ${error.message}`)
+        }
+    }
     
+    // TODO: Be able to update currencies 
     async update(){
         try{
 
