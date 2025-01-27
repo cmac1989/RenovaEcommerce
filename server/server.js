@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const { google } = require('googleapis');
 const db = require("../server/config/database");
 const userRoutes = require('./routes/user');
 const productRoutes = require('./routes/product');
@@ -18,6 +19,37 @@ db.connect();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(cors({ origin: '*' }));
+
+const oauth2Client = new google.auth.OAuth2(
+    process.env.CLIENT_ID,   // Client ID from Google Developer Console
+    process.env.CLIENT_SECRET, // Client secret from Google Developer Console
+    'http://localhost:3000/oauth2callback'  // This should match your registered redirect URI
+);
+
+const scopes = ['https://mail.google.com/'];
+
+// Route to initiate OAuth2
+app.get('/auth', (req, res) => {
+    const url = oauth2Client.generateAuthUrl({
+        access_type: 'offline',
+        scope: scopes,
+    });
+    res.redirect(url);
+});
+
+// Handle OAuth2 callback
+app.get('/oauth2callback', async (req, res) => {
+    const code = req.query.code;  // Extract the authorization code from the query parameters
+    try {
+        const { tokens } = await oauth2Client.getToken(code);  // Exchange code for tokens
+        oauth2Client.setCredentials(tokens);
+        res.send('Authorization successful! Tokens received.');
+        // You can now store the tokens or use them to send emails.
+    } catch (error) {
+        res.send('Error while trying to retrieve access token.');
+        console.error(error);
+    }
+});
 
 // Routes
 app.use('/user', userRoutes);
