@@ -29,11 +29,15 @@ div.cart-page {
     border-top-left-radius: 10px;
 }
 
-.firstRow {
+
+div.productItem div.firstRow {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px 10px 5px 10px;
+}
+div.productItem div.firstRow p {
+    margin: 0 10px;
 }
 
 .secondRow {
