@@ -38,7 +38,7 @@ div.products-page h1 {
     margin-bottom: 5px;
 }
 
-.btn {
+.add-to-cart-btn {
     border: none;
     background: purple;
     color: white;
@@ -51,6 +51,7 @@ div.products-page h1 {
     transition: 0.2s;
 }
 
-.btn:hover {
+.add-to-cart-btn:hover {
     color: black;
+    background-color: white;
 }
