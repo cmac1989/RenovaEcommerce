@@ -3,15 +3,15 @@ const StripePrice = require("./stripePriceModel")
 
 class StripeProduct{
 
-    constructor(id, name, description, images, url, price, stripePriceId){
+    constructor(id, name, description, images, url, price, stripePrice, active){
         this.id = id
         this.name = name
         this.description = description
         this.images = images
         this.url = url
         this.price = price
-        this.stripePriceId = stripePriceId
-        this.active = true
+        this.stripePrice = stripePrice
+        this.active = active
 
         // Flag to check if the price of the product was changed, this way when product updates we only have to 
         // create a new stripe price object if the price was changed
@@ -41,7 +41,7 @@ class StripeProduct{
                 }
             )
 
-            return new StripeProduct(id, name, description, images, url, price, stripePrice.id)
+            return new StripeProduct(id, name, description, images, url, price, stripePrice, true)
         }
         catch (error){
             console.log(`Error in stripePriceModel.js function create: ${error.message}`)
@@ -62,11 +62,63 @@ class StripeProduct{
                 product.images,
                 product.url,
                 price.unitAmount,
-                price.id
+                price,
+                product.active
             )
         }
         catch (error){
             console.log(`Error in stripeProductModel.js function findById: ${error.message}`)
+        }
+    }
+
+    async update(){
+        try{
+
+            // If the price of product has changed
+            if (this.priceChange){
+                // Create new Stripe price with updated price
+                const newStripePrice = await StripePrice.create(this.price, this.id)
+                
+                // Update product
+                await stripe.products.update(
+                    this.id,
+                    {
+                      name: this.name,
+                      description: this.description,
+                      images: this.images,
+                      url: this.url,
+                      active: this.active,
+                      default_price: newStripePrice.id
+                    }
+                )
+
+                // Archive the old Stripe price
+                this.stripePrice.active = false
+                this.stripePrice.update()
+
+                // Update products Stripe price to new stripe price
+                this.stripePrice = newStripePrice
+
+                this.priceChange = false
+            }
+            else{
+
+                // Update product
+                await stripe.products.update(
+                    this.id,
+                    {
+                      name: this.name,
+                      description: this.description,
+                      images: this.images,
+                      url: this.url,
+                      active: this.active,
+                      default_price: newStripePrice.id
+                    }
+                )
+            }
+        }
+        catch (error){
+            console.log(`Error in stripeProductModel.js function update: ${error.message}`)
         }
     }
 }

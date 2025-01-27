@@ -2,11 +2,11 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 
 class StripePrice{
 
-    constructor(id, unitAmount, productId){
+    constructor(id, unitAmount, productId, active){
         this.id = id
         this.unitAmount = unitAmount
         this.productId = productId
-        this.active = true
+        this.active = active
     }
 
     static async create(unitAmount, productId){
@@ -20,7 +20,7 @@ class StripePrice{
                 product: productId
             })
 
-            return new StripePrice(price.id, unitAmount, productId)
+            return new StripePrice(price.id, unitAmount, productId, true)
         }
         catch (error){
             console.log(`Error in stripePriceModel.js function create: ${error.message}`)
@@ -30,11 +30,13 @@ class StripePrice{
     static async findById(id){
         try{
 
+            // Get price object from stripe
             const price = await stripe.prices.retrieve(id);
             return new StripePrice(
                 id, 
                 price.unit_amount / 100, // Convert price from cents to dollars
-                price.id
+                price.id,
+                price.active
             )
         }
         catch (error){
