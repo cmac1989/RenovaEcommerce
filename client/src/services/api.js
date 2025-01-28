@@ -27,11 +27,6 @@ export const getProducts = () => {
 export const addProduct = (product) => {
     return API.post("/cart", product);
 }
-// export const removeCartItem = (cartItem) => {
-//     // console.log(`Attempting to delete /cart/${cartItem.cart_item_id}`);
-//     // console.log(`Attempting to delete ${cartItem.cart_item_id}`);
-//     return API.delete(`/cart/${cartItem.cart_item_id}`);  // Ensure no trailing slash
-// }
 export const removeCartItem = (cartItem) => {
     console.log(`Attempting to delete /cart/${cartItem.cart_item_id}`);
     return API.delete(`/cart/${cartItem.cart_item_id}`, {
