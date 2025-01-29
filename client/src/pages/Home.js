@@ -9,8 +9,7 @@ function Home() {
   return (
     <div className="home-page">
         <div className="section a">
-          <img src={img} />
-          <img src={img2} />
+
         </div>
 
         <div className="section b">

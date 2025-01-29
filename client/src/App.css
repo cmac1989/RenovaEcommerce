@@ -3,3 +3,15 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+:root {
+    --text: #dadadc;
+}
+
+div.App {
+    background-image: url(./assets/images/dark-background.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+}

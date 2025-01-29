@@ -1,6 +1,6 @@
 div.header {
-    height: 100px;
-    border-bottom: 1px solid rgb(213, 213, 213);
+    height: 80px;
+    color: var(--text);
 }
 
 div.banner {
@@ -9,6 +9,8 @@ div.banner {
     color: white;
     text-align: center;
     font-weight: 100;
+
+    display: none;
 }
 
 div.headerContent {
@@ -20,7 +22,7 @@ div.headerContent {
 
 div.headerContent a {
     text-decoration: none;
-    color: #000;
+    color: var(--text);
     padding: 0 10px;
 }
 
