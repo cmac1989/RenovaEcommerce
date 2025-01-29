@@ -1,4 +1,3 @@
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 const StripeProduct = require("../models/stripeProductModel")
 const StripePrice = require("../models/stripePriceModel")
 
@@ -9,7 +8,7 @@ const StripePrice = require("../models/stripePriceModel")
  * @param {Object} response Express js response object.
  * @returns {void}
  */
-exports.createProductWithPrice = async (request, response) => {
+exports.createProductAndPrice = async (request, response) => {
 
     const {id, name, description, images, url, price} = request.body
 
@@ -125,6 +124,42 @@ exports.archiveProductAndPrice = async (request, response) => {
     }
 }
 
+/**
+ * Gets product and products price details on Stripe server.
+ * @param {Object} request Express js request object.
+ * @param {Object} response Express js response object.
+ * @returns {void}
+ */
+exports.getProductAndPrice = async (request, response) => {
+
+    const {id} = request.body
+
+    try{
+
+        // Get product on Stripe server
+        const stripeProduct = await StripeProduct.findById(id)
+
+        // Get products price on Stripe server
+        const stripePrice = stripeProduct.defaultPriceId ? await StripePrice.findById(stripeProduct.defaultPriceId) : null
+
+        console.log("Product queried successfully on Stripe.")
+        response.status(200).json({
+            message: "Product queried successfully on Stripe.",
+            id: stripeProduct.id,
+            name: stripeProduct.name,
+            description: stripeProduct.description,
+            images: stripeProduct.images,
+            url: stripeProduct.url,
+            archived: stripeProduct.active,
+            defaultPriceId: stripePrice ? stripeProduct.defaultPriceId : null,
+            price: stripePrice ? stripePrice.unitAmount : null
+        })
+    } 
+    catch (error){
+        console.log(`Error in stripeController.js function getProductAndPrice: ${error.message}`)
+        response.status(500).json({error: error.message})
+    }
+}
 
 
 

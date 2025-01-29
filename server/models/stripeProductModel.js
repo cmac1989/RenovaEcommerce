@@ -1,5 +1,4 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
-const StripePrice = require("./stripePriceModel")
 
 class StripeProduct{
 
