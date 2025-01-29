@@ -86,6 +86,47 @@ exports.updateProductAndPrice = async (request, response) => {
     }
 }
 
+/**
+ * Archives product and products price on Stripe server so product is not available at checkout.
+ * @param {Object} request Express js request object.
+ * @param {Object} response Express js response object.
+ * @returns {void}
+ */
+exports.archiveProductAndPrice = async (request, response) => {
+
+    const {id} = request.body
+
+    try{
+
+        // Get product on Stripe server
+        const stripeProduct = await StripeProduct.findById(id)
+
+        // Get products price on Stripe server
+        const stripePrice = stripeProduct.defaultPriceId ? await StripePrice.findById(stripeProduct.defaultPriceId) : null
+
+        // Archive product
+        stripeProduct.active = false
+        await stripeProduct.update()
+
+        // If there is a price for product
+        if (stripePrice !== null){
+
+            // Archive products Stripe price
+            stripePrice.active = false
+            await stripePrice.update()
+        }
+
+        console.log("Product archived successfully on Stripe.")
+        response.status(200).json({message: "Product archived successfully on Stripe."})
+    } 
+    catch (error){
+        console.log(`Error in stripeController.js function archiveProductAndPrice: ${error.message}`)
+        response.status(500).json({error: error.message})
+    }
+}
+
+
+
 
 
 
