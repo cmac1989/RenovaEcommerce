@@ -1,4 +1,14 @@
-div.home-page {
-    padding: 0 80px;
-    height: 100vh;
+.home-page .section {
+    height: 90vh;
+}
+
+.a {
+    display: flex;
+    justify-content: center;
+}
+
+.a img {
+    max-height: 550px;
+    padding: 10px;
+    align-self: center;
 }
