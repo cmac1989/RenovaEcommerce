@@ -1,41 +1,26 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
+const StripeProduct = require("../models/stripeProductModel")
 
-// Function creates Stripe product and gives the product a Stripe price
+
+/**
+ * Creates product on Stripe server.
+ * @param {Object} request Express js request object.
+ * @param {Object} response Express js response object.
+ * @returns {void}
+ */
 exports.createProduct = async (request, response) => {
 
-    const {name, description, id, price} = request.body
+    const {id, name, description, images, url, price} = request.body
 
     try{
-        // Create Stripe product
-        // TODO: Add images, and url for product
-        await stripe.products.create({
-            name: name,
-            description: description,
-            id: id,
-        })
-
-        // Create Stripe price object for product
-        const stripePrice = await stripe.prices.create({
-            currency: "cad",
-            unit_amount: price * 100, // Convert price from dollars to cents
-            product: id
-        })
-
-        // Update product object to point to its price object
-        await stripe.products.update(
-            id,
-            {
-              default_price: stripePrice.id
-            }
-        )
+        await StripeProduct.create(id, name, description, images, url, price)
+        console.log("Product added successfully to Stripe.")
+        response.status(200).json({message: "Product added successfully to Stripe."})
     } 
     catch (error){
         console.log(`Error in stripeController.js function createProduct: ${error.message}`)
-        return response.status(500).json({error: error.message})
+        response.status(500).json({error: error.message})
     }
-
-    console.log("Product added successfully to Stripe.")
-    return response.status(200).json({message: "Product added successfully to Stripe."})
 }
 
 // Function archives Stripe product and its Stripe price
@@ -122,3 +107,4 @@ exports.updateProduct = async (request, response) => {
     console.log("Product successfully updated.")
     return response.status(200).json({message: "Product successfully updated."})
 }
+

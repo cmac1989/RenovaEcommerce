@@ -42,6 +42,11 @@ class StripeProduct{
     static async create(id, name, description, images, url, price){
         try{
 
+            // Validate price ahead of time as price object is created after product object
+            if (price < 0 || price > 999999999999){
+                throw new Error("Price must be between $0.00 and $999999999999.00")
+            }
+
             // Create Stripe product
             await stripe.products.create({
                 id: id,
@@ -65,7 +70,8 @@ class StripeProduct{
             return new StripeProduct(id, name, description, images, url, price, stripePrice, true)
         }
         catch (error){
-            console.log(`Error in stripePriceModel.js function create: ${error.message}`)
+            console.log(`Error in stripeProductModel.js function create: ${error.message}`)
+            throw new Error(error.message)
         }
     }
 
