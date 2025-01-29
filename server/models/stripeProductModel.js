@@ -116,7 +116,7 @@ class StripeProduct{
 
     // Getters and setters
     get id(){
-        return this.#active
+        return this.#id
     }
     set id(_){
         throw new Error("StripeProduct id cannot be modified.")

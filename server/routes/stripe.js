@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const {createProduct, archiveProduct, updateProduct} = require("../controllers/stripeController")
+const {createProductWithPrice} = require("../controllers/stripeController")
 
-router.post("/create", createProduct);  
-router.post("/archive", archiveProduct)
-router.post("/update", updateProduct)
+router.post("/create-product-with-price", createProductWithPrice);  
+
 
 module.exports = router;
