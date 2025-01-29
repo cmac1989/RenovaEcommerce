@@ -100,11 +100,13 @@ class StripeProduct{
         }
         catch (error){
             console.log(`Error in stripeProductModel.js function findById: ${error.message}`)
+            throw new Error(error.message)
         }
     }
 
     /**
      * Updates the product on the Stripe server to reflect the current properties of this instance.
+     * @returns {void}
      */
     async update(){
         try{
@@ -156,8 +158,91 @@ class StripeProduct{
         }
         catch (error){
             console.log(`Error in stripeProductModel.js function update: ${error.message}`)
+            throw new Error(error.message)
         }
     }
+
+    toString() {
+        return `heyyo ${this.#id}`
+    }
+
+    // Getters and setters
+    get id(){
+        return this.#active
+    }
+    set id(_){
+        throw new Error("id cannot be modified.")
+    }
+
+    get name(){
+        return this.#name
+    }
+    set name(newName){
+        this.#name = newName
+    }
+
+    get description(){
+        return this.#description
+    }
+    set description(newDescription){
+        this.#description = newDescription
+    }
+
+    get images(){
+        return this.#images
+    }
+    set images(newImages){
+        // Must be of length at most 8
+        if (newImages.length > 8){
+            throw new Error("There can only be at most 8 image urls.")
+        }
+        this.#images = newImages
+    }
+
+    get url(){
+        return this.#url
+    }
+    set url(newUrl){
+        this.#url = newUrl
+    }
+
+    get price(){
+        return this.#price
+    }
+    set price(newPrice){
+        // If price is not in range
+        if (price < 0 || price > 999999999999){
+            throw new Error("price must be between 0 and 999999999999.")
+        }
+        
+        // If price has changed
+        if (this.#price != newPrice){
+            this.#priceChange = true
+            this.#price = newPrice
+        }
+    }
+
+    get stripePrice(){
+        return this.#stripePrice
+    }
+    set stripePrice(_){
+        throw new Error("stripePrice object cannot be modified.")
+    }
+
+    get active(){
+        return this.#active
+    }
+    set active(newActive){
+        this.#active = newActive
+    }
+
+    get priceChange(){
+        return this.#priceChange
+    }
+    set priceChange(_){
+        throw new Error("priceChange cannot be modified.")
+    }
+
 }
 
 module.exports = StripeProduct
