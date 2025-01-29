@@ -7,6 +7,13 @@ class StripePrice{
     #productId
     #active
 
+    /**
+     * Represents a Stripe price on the Stripe server.
+     * @param {string} id Id of price.
+     * @param {number} unitAmount The price of the Stripe product which this price is associated with. (In dollars)
+     * @param {string} productId Id of the Stripe product which this price is associated with.
+     * @param {boolean} active Whether the price can be used for new purchases.
+     */
     constructor(id, unitAmount, productId, active){
         this.#id = id
         this.#unitAmount = unitAmount
@@ -17,7 +24,7 @@ class StripePrice{
     /**
      * Creates a price on the Stripe server which must be associated with a product on the Stripe server.
      * @param {number} unitAmount How much to charge in dollars for the product associated with this price.
-     * @param {string} productId Id of the product which this price is associated with.
+     * @param {string} productId Id of the Stripe product which this price is associated with.
      * @returns {StripePrice}
      */
     static async create(unitAmount, productId){

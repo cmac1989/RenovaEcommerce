@@ -8,24 +8,27 @@ class StripeProduct{
     #description
     #images
     #url
-    #price
-    #stripePrice
     #active
-    #priceChange
+    #defaultPriceId
 
-    constructor(id, name, description, images, url, price, stripePrice, active){
+    /**
+     * Represents a Stripe product on the Stripe server.
+     * @param {string} id Id of the product.
+     * @param {string} name Name of the product.
+     * @param {string} description Description of the product.
+     * @param {Array<string>} images Product image urls.
+     * @param {string} url Product webpage url.
+     * @param {string} defaultPriceId Id of Stripe price object which is the default price for this product.
+     * @param {boolean} active Whether the product is currently available for purchase.
+     */
+    constructor(id, name, description, images, url, defaultPriceId, active){
         this.#id = id
         this.#name = name
         this.#description = description
         this.#images = images
         this.#url = url
-        this.#price = price
-        this.#stripePrice = stripePrice
+        this.#defaultPriceId = defaultPriceId
         this.#active = active
-
-        // Flag to check if the price of the product was changed, this way when product updates we only have to 
-        // create a new stripe price object if the price was changed
-        this.#priceChange = false
     }
 
     /**
@@ -36,16 +39,10 @@ class StripeProduct{
      * @param {string} description Description of product.
      * @param {Array<string>} images Product image urls. (Up to 8 urls)
      * @param {string} url Url of webpage for product.
-     * @param {number} price Price of product in dollars.
      * @returns {StripeProduct}
      */
-    static async create(id, name, description, images, url, price){
+    static async create(id, name, description, images, url){
         try{
-
-            // Validate price ahead of time as price object is created after product object
-            if (price < 0 || price > 999999999999){
-                throw new Error("Price must be between $0.00 and $999999999999.00")
-            }
 
             // Create Stripe product
             await stripe.products.create({
@@ -56,18 +53,7 @@ class StripeProduct{
                 url: url
             })
 
-            // Create Stripe price object for product
-            const stripePrice = await StripePrice.create(price, id)
-
-            // Update default price of product to id of Stripe price object
-            await stripe.products.update(
-                id,
-                {
-                  default_price: stripePrice.id
-                }
-            )
-
-            return new StripeProduct(id, name, description, images, url, price, stripePrice, true)
+            return new StripeProduct(id, name, description, images, url, null, true)
         }
         catch (error){
             console.log(`Error in stripeProductModel.js function create: ${error.message}`)
@@ -83,9 +69,8 @@ class StripeProduct{
     static async findById(id){
         try{
 
-            // Get product object and products price object 
+            // Get product from Stripe
             const product = await stripe.products.retrieve(id);
-            const stripePrice = await StripePrice.findById(product.default_price)
 
             return new StripeProduct(
                 product.id,
@@ -93,8 +78,7 @@ class StripeProduct{
                 product.description,
                 product.images,
                 product.url,
-                stripePrice.unitAmount,
-                stripePrice,
+                product.default_price,
                 product.active
             )
         }
@@ -111,50 +95,18 @@ class StripeProduct{
     async update(){
         try{
 
-            // If the price of product has changed
-            if (this.#priceChange){
-                // Create new Stripe price object with updated price
-                const newStripePrice = await StripePrice.create(this.#price, this.#id)
-                
-                // Update product
-                await stripe.products.update(
-                    this.#id,
-                    {
-                      name: this.#name,
-                      description: this.#description,
-                      images: this.#images,
-                      url: this.#url,
-                      active: this.#active,
-
-                      // Default price is set to id of new Stripe price object
-                      default_price: newStripePrice.id
-                    }
-                )
-
-                // Archive the old Stripe price object
-                this.#stripePrice.active = false
-                this.#stripePrice.update()
-
-                // Update products Stripe price object to new Stripe price object
-                this.#stripePrice = newStripePrice
-
-                this.#priceChange = false
-            }
-            else{
-
-                // Update product
-                await stripe.products.update(
-                    this.#id,
-                    {
-                      name: this.#name,
-                      description: this.#description,
-                      images: this.#images,
-                      url: this.#url,
-                      active: this.#active,
-                      default_price: this.#stripePrice.id
-                    }
-                )
-            }
+            // Update product
+            await stripe.products.update(
+                this.#id,
+                {
+                    name: this.#name,
+                    description: this.#description,
+                    images: this.#images,
+                    url: this.#url,
+                    default_price: this.#defaultPriceId,
+                    active: this.#active,
+                }
+            )
         }
         catch (error){
             console.log(`Error in stripeProductModel.js function update: ${error.message}`)
@@ -202,27 +154,11 @@ class StripeProduct{
         this.#url = newUrl
     }
 
-    get price(){
-        return this.#price
+    get defaultPriceId(){
+        return this.#defaultPriceId
     }
-    set price(newPrice){
-        // If price is not in range
-        if (price < 0 || price > 999999999999){
-            throw new Error("price must be between 0 and 999999999999.")
-        }
-        
-        // If price has changed
-        if (this.#price != newPrice){
-            this.#priceChange = true
-            this.#price = newPrice
-        }
-    }
-
-    get stripePrice(){
-        return this.#stripePrice
-    }
-    set stripePrice(_){
-        throw new Error("StripeProduct stripePrice object cannot be modified.")
+    set defaultPriceId(newDefaultPriceId){
+        this.#defaultPriceId = newDefaultPriceId
     }
 
     get active(){
@@ -231,14 +167,6 @@ class StripeProduct{
     set active(newActive){
         this.#active = newActive
     }
-
-    get priceChange(){
-        return this.#priceChange
-    }
-    set priceChange(_){
-        throw new Error("StripeProduct priceChange cannot be modified.")
-    }
-
 }
 
 module.exports = StripeProduct
