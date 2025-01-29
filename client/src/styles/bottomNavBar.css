@@ -4,6 +4,7 @@
     border-top: 1px solid rgb(213, 213, 213);
     position: sticky;
     bottom: 0;
+    background-color: white;
 }
 
 .bottomNav a {
