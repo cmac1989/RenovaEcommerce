@@ -162,16 +162,12 @@ class StripeProduct{
         }
     }
 
-    toString() {
-        return `heyyo ${this.#id}`
-    }
-
     // Getters and setters
     get id(){
         return this.#active
     }
     set id(_){
-        throw new Error("id cannot be modified.")
+        throw new Error("StripeProduct id cannot be modified.")
     }
 
     get name(){
@@ -226,7 +222,7 @@ class StripeProduct{
         return this.#stripePrice
     }
     set stripePrice(_){
-        throw new Error("stripePrice object cannot be modified.")
+        throw new Error("StripeProduct stripePrice object cannot be modified.")
     }
 
     get active(){
@@ -240,7 +236,7 @@ class StripeProduct{
         return this.#priceChange
     }
     set priceChange(_){
-        throw new Error("priceChange cannot be modified.")
+        throw new Error("StripeProduct priceChange cannot be modified.")
     }
 
 }
