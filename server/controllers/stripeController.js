@@ -34,5 +34,59 @@ exports.createProductWithPrice = async (request, response) => {
     }
 }
 
+/**
+ * Updates product and products price on Stripe server.
+ * @param {Object} request Express js request object.
+ * @param {Object} response Express js response object.
+ * @returns {void}
+ */
+exports.updateProductAndPrice = async (request, response) => {
+
+    const {id, name, description, images, url, price} = request.body
+
+    try{
+
+        // Get product on Stripe server
+        const stripeProduct = await StripeProduct.findById(id)
+
+        // Get products price on Stripe server
+        const stripePrice = stripeProduct.defaultPriceId ? await StripePrice.findById(stripeProduct.defaultPriceId) : null
+                
+        // If there is no price for product or price has changed
+        if (stripePrice == null || stripePrice.unitAmount != price){
+
+            // Create new Stripe price for product
+            const newStripePrice = await StripePrice.create(price, stripeProduct.id)
+
+            // Update Stripe product to have new price
+            stripeProduct.defaultPriceId = newStripePrice.id
+        }
+
+        // Update product details
+        stripeProduct.name = name
+        stripeProduct.description = description
+        stripeProduct.images = images
+        stripeProduct.url = url
+        await stripeProduct.update()
+
+        // If there exists a price for product and price has been changed
+        if (stripePrice !== null && stripePrice.unitAmount != price){
+            
+            // Archive old Stripe price as product has been given updated price
+            stripePrice.active = false
+            await stripePrice.update()
+        }
+
+        console.log("Product updated successfully on Stripe.")
+        response.status(200).json({message: "Product updated successfully on Stripe."})
+    } 
+    catch (error){
+        console.log(`Error in stripeController.js function updateProductAndPrice: ${error.message}`)
+        response.status(500).json({error: error.message})
+    }
+}
+
+
+
 
 
