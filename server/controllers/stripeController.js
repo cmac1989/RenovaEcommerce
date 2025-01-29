@@ -1,7 +1,6 @@
 const StripeProduct = require("../models/stripeProductModel")
 const StripePrice = require("../models/stripePriceModel")
 
-
 /**
  * Creates product with price on Stripe server.
  * @param {Object} request Express js request object.
@@ -151,7 +150,6 @@ exports.getProductAndPrice = async (request, response) => {
             images: stripeProduct.images,
             url: stripeProduct.url,
             archived: stripeProduct.active,
-            defaultPriceId: stripePrice ? stripeProduct.defaultPriceId : null,
             price: stripePrice ? stripePrice.unitAmount : null
         })
     } 
@@ -160,9 +158,3 @@ exports.getProductAndPrice = async (request, response) => {
         response.status(500).json({error: error.message})
     }
 }
-
-
-
-
-
-

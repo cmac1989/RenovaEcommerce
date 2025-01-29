@@ -17,7 +17,19 @@ db.connect();
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.json());
+
+// Only apply the bodyParser.json if it is not the Stripe webhook route as the Stripe webhook needs the raw
+// body for verification
+app.use((request, response, next)=>{
+    // If route is Stripe webook do not apply bodyParser
+    if (request.path == "/stripe/webhook"){
+        next()
+    }
+    else{
+        bodyParser.json()(request, response, next)
+    }
+})
+
 app.use(cors({ origin: '*' }));
 
 // Routes
