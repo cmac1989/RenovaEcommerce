@@ -1,13 +1,15 @@
-import { NavLink } from "react-router-dom";
-import "../styles/header.css";
-import { useSelector } from "react-redux";
-import { CgShoppingCart } from "react-icons/cg";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
+import { NavLink } from 'react-router-dom';
+import { CgShoppingCart } from 'react-icons/cg';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import { useEffect, useState } from "react";
+import { getCartItems } from "../services/api";
+import '../styles/header.css';
+import {useCart} from "../providers/CartContext";
 
 function Header() {
-  const cartQuantity = useSelector((state) => state.cart.totalAmount);
+  const { cartQuantity } = useCart();
   return (
     <div className="header">
       <div className="banner">PLACEHOLDER</div>

@@ -2,9 +2,10 @@ import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import "../styles/bottomNavBar.css";
 import { CgShoppingCart } from "react-icons/cg";
+import {useCart} from "../providers/CartContext";
 
 function BottomNavBar() {
-  const cartQuantity = useSelector((state) => state.cart.totalAmount);
+  const { cartQuantity } = useCart();
   return (
     <div className="bottomNav">
       <NavLink to="/">Home</NavLink>
