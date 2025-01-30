@@ -8,6 +8,7 @@ const productRoutes = require('./routes/product');
 const orderRoutes = require('./routes/order');
 const orderItemRoutes = require('./routes/orderItem');
 const cartRoutes = require('./routes/cart');
+const emailRoutes = require('./mail/email');
 
 require('dotenv').config();
 
@@ -16,7 +17,7 @@ const app = express();
 db.connect();
 
 // Middleware
-app.use(cors());
+// app.use(cors());
 app.use(bodyParser.json());
 app.use(cors({ origin: '*' }));
 
@@ -38,18 +39,19 @@ app.get('/auth', (req, res) => {
 });
 
 // Handle OAuth2 callback
-app.get('/oauth2callback', async (req, res) => {
-    const code = req.query.code;  // Extract the authorization code from the query parameters
-    try {
-        const { tokens } = await oauth2Client.getToken(code);  // Exchange code for tokens
-        oauth2Client.setCredentials(tokens);
-        res.send('Authorization successful! Tokens received.');
-        // You can now store the tokens or use them to send emails.
-    } catch (error) {
-        res.send('Error while trying to retrieve access token.');
-        console.error(error);
-    }
-});
+// app.get('/oauth2callback', async (req, res) => {
+//     const code = req.query.code;  // Extract the authorization code from the query parameters
+//     try {
+//         const { tokens } = await oauth2Client.getToken(code);  // Exchange code for tokens
+//         console.log('Raw Token Response:', tokens);
+//         oauth2Client.setCredentials(tokens);
+//         res.send('Authorization successful! Tokens received.');
+//         // You can now store the tokens or use them to send emails.
+//     } catch (error) {
+//         res.send('Error while trying to retrieve access token.');
+//         console.error(error);
+//     }
+// });
 
 // Routes
 app.use('/user', userRoutes);
@@ -57,6 +59,8 @@ app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
 app.use('/orderItems', orderItemRoutes);
 app.use('/cart', cartRoutes);
+// app.use('/', emailRoutes);
+app.use("/api", emailRoutes);
 
 // Global error handler for unknown routes
 app.use((req, res, next) => {
