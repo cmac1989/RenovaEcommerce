@@ -1,5 +1,7 @@
 const StripeProduct = require("../models/stripeProductModel")
 const StripePrice = require("../models/stripePriceModel")
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
+
 
 /**
  * Creates product with price on Stripe server.
@@ -155,6 +157,52 @@ exports.getProductAndPrice = async (request, response) => {
     } 
     catch (error){
         console.log(`Error in stripeController.js function getProductAndPrice: ${error.message}`)
+        response.status(500).json({error: error.message})
+    }
+}
+
+/**
+ * Creates checkout session on Stripe server.
+ * @param {Object} request Express js request object.
+ * @param {Object} response Express js response object.
+ * @returns {void}
+ */
+exports.createCheckoutSession = async (request, response) => {
+
+    // Products passed through request is expected to be in format such as:
+    // [ {id: productId, quantity: 1}, {id: productId, quantity: 1}, {id: productId, quantity: 2}]
+
+    const {products} = request.body
+
+    try{
+
+        // Build the line items to be passed to Stripe
+        let lineItems = []
+        for (const {id, quantity} of products){
+            lineItems.push({
+                price: await StripeProduct.findById(id).defaultPriceId, // Products associated price id
+                quantity: quantity
+            })
+        }
+
+        // Create Stripe checkout session
+        const session = await stripe.checkout.sessions.create({
+            ui_mode: 'embedded',
+            line_items: lineItems,
+            mode: 'payment',
+
+            // TODO: Change return url
+            return_url: `https://google.com`,
+          });
+        
+        console.log("Checkout session created successfully on Stripe.")
+        response.status(200).json({
+            message: "Checkout session created successfully on Stripe.",
+            clientSecret: session.client_secret
+        })
+    } 
+    catch (error){
+        console.log(`Error in stripeController.js function createCheckoutSession: ${error.message}`)
         response.status(500).json({error: error.message})
     }
 }
