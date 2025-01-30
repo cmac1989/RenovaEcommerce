@@ -190,6 +190,9 @@ exports.createCheckoutSession = async (request, response) => {
             ui_mode: 'embedded',
             line_items: lineItems,
             mode: 'payment',
+            automatic_tax: {
+                enabled: true
+            },
 
             // TODO: Change return url
             return_url: `https://google.com`,
