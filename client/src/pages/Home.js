@@ -1,15 +1,20 @@
 import React from 'react'
 import '../styles/homePage.css'
-import '../assets/images/IMG_8511.jpg'
-import '../assets/images/IMG_8509.jpg'
+import '../assets/images/hoodie2.png'
 
 function Home() {
-  const img = require('../assets/images/IMG_8511.jpg')
-  const img2 = require('../assets/images/IMG_8509.jpg')
+  const hoodieImg = require('../assets/images/hoodie2.png')
+
   return (
     <div className="home-page">
         <div className="section a">
-
+          <div className="text">
+            <h1>BRAND</h1>
+            <p>Brand info cool modern streetwear comfy</p>
+          </div>
+          <div className="image">
+            <img src={hoodieImg} />
+          </div>
         </div>
 
         <div className="section b">
