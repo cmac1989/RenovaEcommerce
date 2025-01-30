@@ -64,16 +64,29 @@ export default function ContactForm() {
         return Object.keys(newErrors).length === 0; // Return true if no errors
     };
     // Handle form submission
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const form = event.currentTarget;
 
         if (validateForm()) {
+            const response = await fetch("http://localhost:3306/api/send-email", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    to: formData.email,
+                    subject: `Message from ${formData.firstName} ${formData.lastName}`,
+                    text: formData.message,
+                }),
+            });
+
+            const data = await response.json();
+            alert(data.message);
             setShowModal(true);
-            setFormData({firstName: '', lastName: '', email: '', message: ''});
+            setFormData({ firstName: '', lastName: '', email: '', message: '' });
         } else {
-            console.log("form errors")
+            console.log("Form has errors");
         }
+
     };
     return (
         <div>
@@ -133,10 +146,10 @@ export default function ContactForm() {
                     Submit
                 </Button>
             </Form>
-            <FormModal
-                show={showModal}
-                onHide={() => setShowModal(false)}
-            />
+            {/*<FormModal*/}
+            {/*    show={showModal}*/}
+            {/*    onHide={() => setShowModal(false)}*/}
+            {/*/>*/}
         </div>
     );
 }
