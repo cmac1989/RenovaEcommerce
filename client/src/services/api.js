@@ -2,7 +2,7 @@ import axios from "axios";
 
 // set up url to match express
 const API = axios.create({
-    baseURL: 'http://localhost:8080',
+    baseURL: 'http://localhost:3306',
 });
 
 API.interceptors.request.use(
@@ -27,34 +27,32 @@ export const getProducts = () => {
 export const addProduct = (product) => {
     return API.post("/cart", product);
 }
+export const removeCartItem = (cartItem) => {
+    console.log(`Attempting to delete /cart/${cartItem.cart_item_id}`);
+    return API.delete(`/cart/${cartItem.cart_item_id}`, {
+        data: {
+            product_id: cartItem.product_id,
+            quantity: cartItem.quantity,
+        },
+    });
+};
+
 
 export const getCartItems = async () => {
     try {
-
         const token = localStorage.getItem('jwtToken');
-        console.log('Token retrieved from localStorage:', token);
-        // Assuming the token is stored here
-        // console.log(token);
+        // console.log('Token retrieved from localStorage:', token);
         if (!token) {
             throw new Error("JWT token is missing");
         }
-        // console.log((await API.get('http://localhost:8080/cart')).data);
-        console.log('Token before request:', token);
-        const response = await API.get('http://localhost:8080/cart' //{
-            // headers: {
-            //     'Authorization': `Bearer ${token}`,
-            // },
-        //}
+        // console.log('Token before request:', token);
+        const response = await API.get('/cart'
         );
-        // console.log(response);
         return response.data;  // Return cart data from the server
 
     } catch (error) {
         console.error('Error fetching cart:', error);
-        console.error('Error fetching cart:', error);
         if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
             console.error('Error Response:', error.response.data);
             console.error('Error Status:', error.response.status);
             console.error('Error Headers:', error.response.headers);
@@ -65,9 +63,6 @@ export const getCartItems = async () => {
             // Something else triggered the error
             console.error('Error Message:', error.message);
         }
-        throw error;  // Rethrow the error for the component to handle
-
-        // You can add specific error messages for user feedback, if needed
         throw error;  // Rethrow the error to let the component handle it
     }
 };
