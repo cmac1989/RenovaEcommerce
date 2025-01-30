@@ -206,3 +206,28 @@ exports.createCheckoutSession = async (request, response) => {
         response.status(500).json({error: error.message})
     }
 }
+
+/**
+ * Gets checkout session status on Stripe server.
+ * @param {Object} request Express js request object.
+ * @param {Object} response Express js response object.
+ * @returns {void}
+ */
+exports.getCheckoutSessionStatus = async (request, response) => {
+
+    try{
+
+        // Get session from Stripe
+        const session = await stripe.checkout.sessions.retrieve(request.query.session_id);
+         
+        console.log("Checkout session queried successfully on Stripe.")
+        response.status(200).json({
+            message: "Checkout session queried successfully on Stripe.",
+            status: session.status,
+        })
+    } 
+    catch (error){
+        console.log(`Error in stripeController.js function getCheckoutSessionStatus: ${error.message}`)
+        response.status(500).json({error: error.message})
+    }
+}
