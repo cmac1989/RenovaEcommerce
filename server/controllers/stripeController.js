@@ -205,8 +205,9 @@ exports.createCheckoutSession = async (request, response) => {
             //     enabled: true
             // },
 
-            // TODO: Change return url to path of Return component in frontend
-            return_url: `https://google.com`,
+            // The URL to redirect customer back to after they authenticate or 
+            // cancel their payment at checkout
+            return_url: "http://localhost:3000/return?session_id={CHECKOUT_SESSION_ID}",
           });
         
         console.log("Checkout session created successfully on Stripe.")
@@ -238,6 +239,7 @@ exports.getCheckoutSessionStatus = async (request, response) => {
         response.status(200).json({
             message: "Checkout session queried successfully on Stripe.",
             status: session.status,
+            customerEmail: session.customer_details.email
         })
     } 
     catch (error){

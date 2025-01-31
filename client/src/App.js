@@ -6,6 +6,7 @@ import Products from './pages/Products'
 import Contact from './pages/Contact';
 import Cart from './pages/Cart';
 import TestStripe from './pages/TestStripe';
+import Return from './components/Return';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
                 <Route path='/contact' element={<Contact />} />
                 <Route path='/cart' element={<Cart />} />
                 <Route path='/test-stripe' element={<TestStripe />} />
+                <Route path='/return' element={<Return />} />
             </Routes>
         </div>
     );

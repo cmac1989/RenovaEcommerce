@@ -9,9 +9,15 @@ import {
 // Stripe publishable key
 const stripePromise = loadStripe("pk_test_51QkxnbK1RDrGHWB8qmu8ClzOQbCZKLaRJC4VCcwAoMpdL6x9lyXA5UHelpCJl1jhLI3CPZPJ5lHYztkzs2waWkbP00CxKlz2Hx");
 
+/**
+ * Stripe checkout form which receives customer information to purchase products in
+ * the cart.
+ * @returns {JSX.Element}
+ */
 const CheckoutForm = () => {
 
     // TODO: Get products from the cart
+
     // Mock data (Actual products on Stripe server)
     const products = [
         {

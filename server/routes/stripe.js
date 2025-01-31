@@ -13,7 +13,7 @@ router.post("/update-product-and-price", updateProductAndPrice);
 router.post("/archive-product-and-price", archiveProductAndPrice);  
 router.post("/get-product-and-price", getProductAndPrice);  
 router.post("/create-checkout-session", createCheckoutSession);  
-router.post("/session-status", getCheckoutSessionStatus);  
+router.get("/session-status", getCheckoutSessionStatus);  
 
 // Must be raw body for webhook verification
 router.post("/webhook", express.raw({type: 'application/json'}), webhook) 
