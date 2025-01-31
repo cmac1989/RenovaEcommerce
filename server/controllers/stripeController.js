@@ -171,7 +171,6 @@ exports.createCheckoutSession = async (request, response) => {
 
     // Products passed through request is expected to be in format such as:
     // [ {id: productId, quantity: 1}, {id: productId, quantity: 1}, {id: productId, quantity: 2}]
-
     const {products} = request.body
 
     try{
@@ -180,21 +179,33 @@ exports.createCheckoutSession = async (request, response) => {
         let lineItems = []
         for (const {id, quantity} of products){
             lineItems.push({
-                price: await StripeProduct.findById(id).defaultPriceId, // Products associated price id
+                price: (await StripeProduct.findById(id)).defaultPriceId, // Products associated price id
                 quantity: quantity
             })
         }
 
-        // Create Stripe checkout session
+        // Create Stripe checkout session (Payment methods available at checkout must be enabled through account)
         const session = await stripe.checkout.sessions.create({
             ui_mode: 'embedded',
             line_items: lineItems,
             mode: 'payment',
-            automatic_tax: {
-                enabled: true
+
+            // These are the allowed shipping countries
+            shipping_address_collection: {
+                allowed_countries: [
+                    "CA",
+                    "US"
+                ]
             },
 
-            // TODO: Change return url
+            // View Stripe for details about registering with jurisdictions to collect tax
+            // To collect taxs you must be registered in Canada to collect and remit GST/HST.
+            // https://docs.stripe.com/tax/supported-countries/canada
+            // automatic_tax: {
+            //     enabled: true
+            // },
+
+            // TODO: Change return url to path of Return component in frontend
             return_url: `https://google.com`,
           });
         

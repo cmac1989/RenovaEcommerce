@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Products from './pages/Products'
 import Contact from './pages/Contact';
 import Cart from './pages/Cart';
+import TestStripe from './pages/TestStripe';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
                 <Route path='/products' element={<Products />} />
                 <Route path='/contact' element={<Contact />} />
                 <Route path='/cart' element={<Cart />} />
+                <Route path='/test-stripe' element={<TestStripe />} />
             </Routes>
         </div>
     );
