@@ -8,7 +8,9 @@ const productRoutes = require('./routes/product');
 const orderRoutes = require('./routes/order');
 const orderItemRoutes = require('./routes/orderItem');
 const cartRoutes = require('./routes/cart');
+const stripeRoutes = require('./routes/stripe')
 const emailRoutes = require('./mail/email');
+
 
 require('dotenv').config();
 
@@ -17,8 +19,20 @@ const app = express();
 db.connect();
 
 // Middleware
-// app.use(cors());
-app.use(bodyParser.json());
+app.use(cors());
+
+// Only apply the bodyParser.json if it is not the Stripe webhook route as the Stripe webhook needs the raw
+// body for verification
+app.use((request, response, next)=>{
+    // If route is Stripe webook do not apply bodyParser
+    if (request.path == "/stripe/webhook"){
+        next()
+    }
+    else{
+        bodyParser.json()(request, response, next)
+    }
+})
+
 app.use(cors({ origin: '*' }));
 
 const oauth2Client = new google.auth.OAuth2(
@@ -59,8 +73,11 @@ app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
 app.use('/orderItems', orderItemRoutes);
 app.use('/cart', cartRoutes);
+app.use('/stripe', stripeRoutes);
+
 // app.use('/', emailRoutes);
 app.use("/api", emailRoutes);
+
 
 // Global error handler for unknown routes
 app.use((req, res, next) => {
