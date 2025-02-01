@@ -1,7 +1,10 @@
 import "../styles/signInForm.css";
 import { useState } from "react";
-import { Form, Button } from "react-bootstrap";
-import { useNavigate } from "react-router";
+import { Form } from "react-bootstrap";
+import { Button } from "./Button";
+import { Link, useNavigate } from "react-router";
+import { Input } from "./Input";
+import { loginUser } from "../services/api";
 
 export default function SignInForm() {
   const [formData, setFormData] = useState({
@@ -12,6 +15,8 @@ export default function SignInForm() {
   const [validated, setValidated] = useState(false);
 
   const navigate = useNavigate();
+
+  const [serverMessage, setServerMessage] = useState("");
 
   const [errors, setErrors] = useState({
     email: "",
@@ -37,12 +42,26 @@ export default function SignInForm() {
     return Object.keys(newErrors).length === 0;
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     if (validateForm()) {
-      setFormData({ email: "", password: "" });
-      navigate("/home");
+      try {
+        const response = await loginUser(formData.email, formData.password);
+        const data = response.data;
+        console.dir(data);
+        setFormData({ email: "", password: "" });
+        setServerMessage(data.message);
+        // navigate("/");
+        
+      } catch (err) {
+        if (err.response) {
+          setServerMessage(err.response.data.error);
+        } else {
+          console.log(err.message); 
+        }
+      }
+
     } else {
       console.log("form errors");
     }
@@ -67,33 +86,42 @@ export default function SignInForm() {
       >
         <Form.Group controlId="formEmail">
           <Form.Label>Email</Form.Label>
-          <Form.Control
+          {/* <Form.Control
             required
             type="email"
             placeholder="Enter email"
             name="email"
             value={formData.email}
             onChange={handleChange}
-          />
+          /> */}
+          <Input type={"email"} placeHolder={"email"} name={"email"} value={formData.email} onChange={handleChange} />
           {errors.email && <span>{errors.email}</span>}
         </Form.Group>
 
         <Form.Group controlId="formPassword">
           <Form.Label>Password</Form.Label>
-          <Form.Control
+          {/* <Form.Control
             required
             type="password"
             placeholder="Enter password"
             name="password"
             value={formData.password}
             onChange={handleChange}
-          />
+          /> */}
+          <Input type={"password"} placeHolder={"password"} name={"password"} value={formData.password} onChange={handleChange} />
           {errors.password && <span>{errors.password}</span>}
         </Form.Group>
-        <Button variant="primary" type="submit">
+        <Button type={"submit"}>log in</Button>
+        <p className="link-to-signup">NO ACCOUNT? <Link className="accent" to={"/signUp"}>SIGN UP</Link></p>
+        {/* <Button variant="primary" type="submit">
           Submit
-        </Button>
+        </Button> */}
+         <p>{serverMessage}</p>
+        
       </Form>
+
+      
+      
     </div>
   );
 }

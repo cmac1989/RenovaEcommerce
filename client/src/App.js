@@ -9,12 +9,14 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import "bootstrap/dist/css/bootstrap.min.css";
 import BottomNavBar from "./components/BottomNavBar";
+import { PageNotFound } from "./pages/PageNotFound";
 
 function App() {
   return (
     <div className="App">
       <Header />
       <Routes>
+        <Route path="*" element={ <PageNotFound/>} />
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
         <Route path="/contact" element={<Contact />} />

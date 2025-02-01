@@ -4,6 +4,7 @@ import { useCart } from "../providers/CartContext";
 import Spinner from "../components/Spinner";
 import "../styles/productsPage.css";
 import ProductModal from "./ProductModal";
+import { Button } from "../components/Button";
 
 function ProductItem() {
   const [products, setProducts] = useState([]);
@@ -81,12 +82,13 @@ function ProductItem() {
               CAD ${product.price}
               <p>{product.description}</p>
             </div>
-            <button
+            {/* <button
               className="add-to-cart-btn"
               onClick={() => addToCartHandler(product)}
             >
               Add to Cart
-            </button>
+            </button> */}
+            <Button onClick={() => addToCartHandler(product)}>Add to Cart</Button>
           </li>
         ))}
       </ul>

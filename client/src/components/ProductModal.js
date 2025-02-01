@@ -1,10 +1,12 @@
 import React from 'react';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
+import { Button } from './Button';
 import Modal from 'react-bootstrap/Modal';
 
 function ProductModal({ show, onHide, title, message, image }) {
     return (
         <Modal
+            data-bs-theme="dark"
             show={show}
             onHide={onHide}
             size="lg"

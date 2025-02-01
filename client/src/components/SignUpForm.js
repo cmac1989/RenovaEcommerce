@@ -1,7 +1,10 @@
 import "../styles/signUpForm.css";
 import { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
+import { Button } from "./Button";
 import { addUser } from "../services/api";
+import { Input } from "./Input";
+import { Link } from "react-router";
 
 export default function SignUpForm() {
   const [formData, setFormData] = useState({
@@ -9,6 +12,8 @@ export default function SignUpForm() {
     password: "",
     username: "",
   });
+
+  const [serverMessage, setServerMessage] = useState("");
 
   const [validated, setValidated] = useState(false);
 
@@ -43,16 +48,28 @@ export default function SignUpForm() {
     return Object.keys(newErrors).length === 0;
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    addUser(formData.email, formData.password, formData.username)
-      .then(() => {})
-      .catch((error) => {
-        console.error("Error adding user:", error);
-      });
-
+    
     if (validateForm()) {
-      setFormData({ email: "", password: "", username: "" });
+      try {
+        const response = await addUser(formData.email, formData.password, formData.username);
+        const data = response.data;
+        setFormData({ email: "", password: "", username: "" });
+        setServerMessage(data.message);
+        
+        
+      } catch (err) {
+        if (err.response) {
+          setServerMessage(err.response.data.error);
+        } else {
+          console.log(err.message); 
+        }
+     
+        
+      }
+
+      
     } else {
       console.log("form errors");
     }
@@ -77,45 +94,54 @@ export default function SignUpForm() {
       >
         <Form.Group controlId="formUsername">
           <Form.Label>Username</Form.Label>
-          <Form.Control
+          {/* <Form.Control
             required
             type="text"
             placeholder="Enter username"
             name="username"
             value={formData.username}
             onChange={handleChange}
-          />
+          /> */}
+          <Input type={"text"} placeHolder={"username"} name={"username"} value={formData.username} onChange={handleChange} />
           {errors.username && <span>{errors.username}</span>}
         </Form.Group>
 
         <Form.Group controlId="formEmail">
           <Form.Label>Email</Form.Label>
-          <Form.Control
+          {/* <Form.Control
             required
             type="email"
             placeholder="Enter email"
             name="email"
             value={formData.email}
             onChange={handleChange}
-          />
+          /> */}
+          <Input type={"email"} placeHolder={"email"} name={"email"} value={formData.email} onChange={handleChange} />
           {errors.email && <span>{errors.email}</span>}
         </Form.Group>
 
         <Form.Group controlId="formPassword">
           <Form.Label>Password</Form.Label>
-          <Form.Control
+          {/* <Form.Control
             required
             type="password"
             placeholder="Enter password"
             name="password"
             value={formData.password}
             onChange={handleChange}
-          />
+          /> */}
+
+          <Input type={"password"} placeHolder={"password"} name={"password"} value={formData.password} onChange={handleChange} />
           {errors.password && <span>{errors.password}</span>}
         </Form.Group>
-        <Button variant="primary" type="submit">
+        {/* <Button variant="primary" type="submit">
           Submit
-        </Button>
+        </Button> */}
+        <Button type={"submit"}>sign up</Button>
+        <p className="link-to-signin">ALREADY HAVE ACCOUNT? <Link className="accent" to={"/signIn"}>SIGN IN</Link></p>
+        {!errors.email && <span>{errors.email}</span>}
+        <p>{serverMessage}</p>
+        
       </Form>
     </div>
   );

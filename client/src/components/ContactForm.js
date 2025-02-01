@@ -1,7 +1,9 @@
 import '../styles/contactForm.css';
 import FormModal from "./FormModal";
 import React, { useState } from 'react';
-import { Form, Button} from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
+import { Input } from "./Input";
+import { Button } from "./Button";
 
 export default function ContactForm() {
     // State for form fields
@@ -93,44 +95,51 @@ export default function ContactForm() {
             <Form className="contact-form" noValidate validated={validated} onSubmit={handleSubmit}>
                 <Form.Group controlId="formFirstName">
                     <Form.Label>First Name</Form.Label>
-                    <Form.Control
+                    {/* <Form.Control
                         required
                         type="text"
                         placeholder="Enter your first name"
                         name="firstName"
                         value={formData.firstName}
                         onChange={handleChange}
-                    />
+                    /> */}
+                    <Input type={"text"} placeHolder={"firstname"} name={"firstName"} value={formData.firstName} onChange={handleChange} />
+
                     {errors.firstName && <span>{errors.firstName}</span>}
                 </Form.Group>
                 <Form.Group controlId="formLastName">
                     <Form.Label>Last Name</Form.Label>
-                    <Form.Control
+                    {/* <Form.Control
                         required
                         type="text"
                         placeholder="Enter your last name"
                         name="lastName"
                         value={formData.lastName}
                         onChange={handleChange}
-                    />
+                    /> */}
+                    <Input type={"text"} placeHolder={"lastname"} name={"lastName"} value={formData.lastName} onChange={handleChange} />
+
                     {errors.lastName && <span>{errors.lastName}</span>}
                 </Form.Group>
 
                 <Form.Group controlId="formEmail">
                     <Form.Label>Email</Form.Label>
-                    <Form.Control
+                    {/* <Form.Control
                         required
                         type="email"
                         placeholder="Enter your email"
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
-                    />
+                    /> */}
+                    <Input type={"email"} placeHolder={"email"} name={"email"} value={formData.email} onChange={handleChange} />
+
                     {errors.email && <span>{errors.email}</span>}
                 </Form.Group>
                 <Form.Group controlId="formTextarea">
                     <Form.Label>Message</Form.Label>
                     <Form.Control
+                        className='textarea'
                         required
                         as="textarea"
                         placeholder="Leave a comment here"
@@ -139,12 +148,11 @@ export default function ContactForm() {
                         value={formData.message}
                         onChange={handleChange}
                     />
+               
                     {errors.message && <span>{errors.message}</span>}
                 </Form.Group>
 
-                <Button variant="primary" type="submit">
-                    Submit
-                </Button>
+                <Button type={"submit"}>contact us</Button>
             </Form>
             {/*<FormModal*/}
             {/*    show={showModal}*/}

@@ -12,3 +12,17 @@ span {
   color: red;
   font-family: sans-serif;
 }
+
+form.signIn-form .button{
+  margin: 1.2rem 0rem 0.8rem 0rem;
+}
+
+form.signIn-form .link-to-signup{
+  color: var(--text);
+  font-size: .8rem;
+  text-align: center;
+}
+
+form.signIn-form .accent{
+  color: lightblue;
+}
