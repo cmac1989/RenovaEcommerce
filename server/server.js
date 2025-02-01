@@ -7,12 +7,13 @@ const productRoutes = require('./routes/product');
 const orderRoutes = require('./routes/order');
 const orderItemRoutes = require('./routes/orderItem');
 const cartRoutes = require('./routes/cart');
+const sequelize = require('./config/database');
 
 require('dotenv').config();
 
 const app = express();
 
-db.connect();
+// db.connect();
 
 // Middleware
 app.use(cors());
@@ -25,6 +26,17 @@ app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
 app.use('/orderItems', orderItemRoutes);
 app.use('/cart', cartRoutes);
+
+const connectDB = async () => {
+    try {
+        await sequelize.authenticate();
+        console.log('successfully connect to the DB')
+        await sequelize.sync();
+        console.log('All models synced')
+    } catch(error) {
+        console.error('error connecting to the DB', error);
+    }
+}
 
 // Global error handler for unknown routes
 app.use((req, res, next) => {
