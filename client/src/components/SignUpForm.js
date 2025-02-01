@@ -45,13 +45,11 @@ export default function SignUpForm() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    addUser(formData.email, formData.password,formData.username)
-      .then(() => {
-      
-      })
+    addUser(formData.email, formData.password, formData.username)
+      .then(() => {})
       .catch((error) => {
-        console.error('Error adding user:', error);
-    })
+        console.error("Error adding user:", error);
+      });
 
     if (validateForm()) {
       setFormData({ email: "", password: "", username: "" });
@@ -67,7 +65,6 @@ export default function SignUpForm() {
       [name]: value,
     });
   }
-  
 
   return (
     <div>
