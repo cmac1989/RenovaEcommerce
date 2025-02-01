@@ -9,7 +9,7 @@ import '../styles/header.css';
 import {useCart} from "../providers/CartContext";
 
 function Header() {
-  const { cartQuantity } = useCart();
+  const { totalQuantity } = useCart();
   return (
     <div className="header">
       <div className="banner">PLACEHOLDER</div>
@@ -22,9 +22,9 @@ function Header() {
         <div className="headerLogo">LOGO</div>
         <div className="headerNav2">
           <NavLink to="/signIn">Sign in</NavLink>
-          <NavLink to="/signUp">Sign in</NavLink>
+          <NavLink to="/signUp">Sign up</NavLink>
           <NavLink to="/cart">
-            {cartQuantity} {<CgShoppingCart />}
+            {totalQuantity} {<CgShoppingCart />}
           </NavLink>
         </div>
       </div>

@@ -59,6 +59,7 @@ export default function SignInForm() {
   return (
     <div>
       <Form
+        method="POST"
         className="signIn-form"
         validated={validated}
         noValidate

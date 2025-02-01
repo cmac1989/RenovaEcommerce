@@ -3,10 +3,10 @@ const jwt = require('jsonwebtoken');
 const userModel = require('../models/userModel');
 
 exports.register = (req, res) => {
-    const { email, password } = req.body;
+    const { email, password,username } = req.body;
     const hashedPassword = bcrypt.hashSync(password, 10);
 
-    userModel.create(email, hashedPassword, (err, result) => {
+    userModel.create(username, email, hashedPassword, (err, result) => {
         if (err) {
             return res.status(500).json({ error: 'Error registering user' });
         }

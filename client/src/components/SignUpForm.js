@@ -1,6 +1,7 @@
 import "../styles/signUpForm.css";
 import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import { addUser } from "../services/api";
 
 export default function SignUpForm() {
   const [formData, setFormData] = useState({
@@ -44,6 +45,13 @@ export default function SignUpForm() {
 
   function handleSubmit(e) {
     e.preventDefault();
+    addUser(formData.email, formData.password,formData.username)
+      .then(() => {
+      
+      })
+      .catch((error) => {
+        console.error('Error adding user:', error);
+    })
 
     if (validateForm()) {
       setFormData({ email: "", password: "", username: "" });
@@ -59,10 +67,12 @@ export default function SignUpForm() {
       [name]: value,
     });
   }
+  
 
   return (
     <div>
       <Form
+        method="POST"
         className="signUp-form"
         validated={validated}
         noValidate
