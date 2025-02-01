@@ -16,7 +16,15 @@ function CartList() {
         // Fetch cart items when the component mounts
         getCartItems()
             .then((response) => {
-                setCartItems(response);  // Store items in state
+                const formattedItems = response.map((item) => ({
+                    cart_item_id: item.id,
+                    quantity: item.quantity,
+                    product_name: item.product.name,
+                    product_price: parseFloat(item.product.price),
+                    product_description: item.product.description,
+                    product_image: item.product.image
+                }));
+                setCartItems(formattedItems);  // Store items in state
 
                 // Set a delay so the spinner stays visible for at least 1 second
                 setTimeout(() => {
@@ -40,11 +48,14 @@ function CartList() {
         // If the quantity is greater than 1, decrease the quantity
         if (item.quantity > 1) {
             const updatedQuantity = item.quantity - 1;
+            console.log(item.cart_item_id)
+            console.log(item.product_id)
+            console.log(item.quantity)
 
             // Call the API to update the quantity
             removeCartItem({
                 cart_item_id: item.cart_item_id,
-                product_id: item.product_id,
+                product_id: item.cart_item_id,
                 quantity: 1, // Decrease by 1
             })
                 .then(() => {
@@ -70,7 +81,7 @@ function CartList() {
             // If the quantity is 1, delete the item
             removeCartItem({
                 cart_item_id: item.cart_item_id,
-                product_id: item.product_id,
+                // product_id: item.product_id,
                 quantity: 1, // Indicate that we're removing one
             })
                 .then(() => {
