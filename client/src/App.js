@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import Products from "./pages/Products";
 import Contact from "./pages/Contact";
 import Cart from "./pages/Cart";
+import TestStripe from './pages/TestStripe';
+import Return from './components/Return';
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -23,6 +25,8 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/signIn" element={<SignIn />} />
         <Route path="/signUp" element={<SignUp />} />
+        <Route path='/test-stripe' element={<TestStripe />} />
+        <Route path='/return' element={<Return />} />
       </Routes>
       <BottomNavBar />
     </div>
