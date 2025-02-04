@@ -1,21 +1,30 @@
 const Product = require('../models/productModel');
 
-exports.getAllProducts = (req, res) => {
-    Product.getAll((err, results) => {
-        if (err) {
-            return res.status(500).json({ error: 'Error fetching products' });
-        }
-        res.json(results);
-    });
-};
+//Fetch all products
+const getAllProducts = async (req, res) => {
+    try {
+        const products = await Product.findAll();
+        console.log(products);
+        res.status(200).json(products);
+    } catch (error) {
+        console.error('There was an error fetching products', error);
+        res.status(500).json({error: 'failed to fetch products'});
+    }
+}
 
-exports.addProduct = (req, res) => {
-    const { name, description, price, image, stock_quantity, created_at, updated_at} = req.body;
-
-    Product.create(name, description, price, image, stock_quantity, created_at, updated_at, (err, result) => {
-        if (err) {
-            return res.status(500).json({ error: 'Error adding product' });
+//Add product to the cart
+const addProduct = async (req, res) => {
+    try {
+        const { id, name, description, price, image, stock_quantity } = req.body;
+        const product = await Product.findByPk(id);
+        if (!product) {
+            return res.status(404).json({message: 'product not found'});
         }
-        res.status(201).json({ message: 'Product added successfully', productId: result.insertId });
-    });
-};
+    } catch(error) {
+        console.error('There was an error fetching products', error);
+        res.status(200).json({error: 'failed to fetch products'});
+    }
+
+}
+
+module.exports = { getAllProducts, addProduct }
