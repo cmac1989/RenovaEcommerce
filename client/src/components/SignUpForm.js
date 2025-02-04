@@ -93,7 +93,7 @@ export default function SignUpForm() {
         onSubmit={handleSubmit}
       >
         <Form.Group controlId="formUsername">
-          <Form.Label>Username</Form.Label>
+          {/* <Form.Label>Username</Form.Label> */}
           {/* <Form.Control
             required
             type="text"
@@ -103,11 +103,12 @@ export default function SignUpForm() {
             onChange={handleChange}
           /> */}
           <Input type={"text"} placeHolder={"username"} name={"username"} value={formData.username} onChange={handleChange} />
-          {errors.username && <span>{errors.username}</span>}
+          {/* {errors.username && <span>{errors.username}</span>} */}
+          <span className={`${errors.username ? '' : 'hidden'}`}>{errors.username}</span>
         </Form.Group>
 
         <Form.Group controlId="formEmail">
-          <Form.Label>Email</Form.Label>
+          {/* <Form.Label>Email</Form.Label> */}
           {/* <Form.Control
             required
             type="email"
@@ -117,11 +118,12 @@ export default function SignUpForm() {
             onChange={handleChange}
           /> */}
           <Input type={"email"} placeHolder={"email"} name={"email"} value={formData.email} onChange={handleChange} />
-          {errors.email && <span>{errors.email}</span>}
+          {/* {errors.email && <span className="hidden">{errors.email}</span>} */}
+          <span className={`${errors.email ? '' : 'hidden'}`}>{errors.email}</span>
         </Form.Group>
 
         <Form.Group controlId="formPassword">
-          <Form.Label>Password</Form.Label>
+          {/* <Form.Label>Password</Form.Label> */}
           {/* <Form.Control
             required
             type="password"
@@ -132,14 +134,14 @@ export default function SignUpForm() {
           /> */}
 
           <Input type={"password"} placeHolder={"password"} name={"password"} value={formData.password} onChange={handleChange} />
-          {errors.password && <span>{errors.password}</span>}
+          {/* {errors.password && <span>{errors.password}</span>} */}
+          <span className={`${errors.password ? '' : 'hidden'}`}>{errors.password}</span>
         </Form.Group>
         {/* <Button variant="primary" type="submit">
           Submit
         </Button> */}
         <Button type={"submit"}>sign up</Button>
         <p className="link-to-signin">ALREADY HAVE ACCOUNT? <Link className="accent" to={"/signIn"}>SIGN IN</Link></p>
-        {!errors.email && <span>{errors.email}</span>}
         <p>{serverMessage}</p>
         
       </Form>

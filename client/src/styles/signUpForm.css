@@ -1,23 +1,27 @@
 form.signUp-form {
-  margin-top: 3rem;
-  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: .8rem;
+  max-width: 445px;
+  margin: 0 auto;
 }
-label.form-label {
+form.signUp-form label.form-label {
   margin-top: 1rem;
 }
-button.btn.btn-primary {
-  margin-top: 15px;
-}
-span {
+
+form.signUp-form span {
+  display: block;
   color: red;
   font-family: sans-serif;
+  height: 18px;
+  transition: 150ms ease-in;
+}
+
+form.signUp-form span.hidden{
+  opacity: 0;
 }
 
 
-form.signUp-form .button{
-  margin-top: 1.2rem;
-  margin-bottom: .6rem;
-}
 
 form.signUp-form  .link-to-signin{
   color: var(--text);

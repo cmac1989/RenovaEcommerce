@@ -85,7 +85,7 @@ export default function SignInForm() {
         onSubmit={handleSubmit}
       >
         <Form.Group controlId="formEmail">
-          <Form.Label>Email</Form.Label>
+          {/* <Form.Label>Email</Form.Label> */}
           {/* <Form.Control
             required
             type="email"
@@ -95,11 +95,12 @@ export default function SignInForm() {
             onChange={handleChange}
           /> */}
           <Input type={"email"} placeHolder={"email"} name={"email"} value={formData.email} onChange={handleChange} />
-          {errors.email && <span>{errors.email}</span>}
+          {/* {errors.email && <span>{errors.email}</span>} */}
+          <span className={`${errors.email ? '' : 'hidden'}`}>{errors.email}</span>
         </Form.Group>
 
         <Form.Group controlId="formPassword">
-          <Form.Label>Password</Form.Label>
+          {/* <Form.Label>Password</Form.Label> */}
           {/* <Form.Control
             required
             type="password"
@@ -109,7 +110,8 @@ export default function SignInForm() {
             onChange={handleChange}
           /> */}
           <Input type={"password"} placeHolder={"password"} name={"password"} value={formData.password} onChange={handleChange} />
-          {errors.password && <span>{errors.password}</span>}
+          {/* {errors.password && <span>{errors.password}</span>} */}
+          <span className={`${errors.password ? '' : 'hidden'}`}>{errors.password}</span>
         </Form.Group>
         <Button type={"submit"}>log in</Button>
         <p className="link-to-signup">NO ACCOUNT? <Link className="accent" to={"/signUp"}>SIGN UP</Link></p>
