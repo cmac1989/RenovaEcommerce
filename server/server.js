@@ -11,6 +11,9 @@ const cartRoutes = require('./routes/cart');
 const stripeRoutes = require('./routes/stripe')
 const emailRoutes = require('./mail/email');
 
+const adminAuthentication = require('./middleware/adminMiddleware')
+const adminRoutes = require('./routes/admin')
+
 const sequelize = require('./config/database');
 
 require('dotenv').config();
@@ -75,6 +78,7 @@ app.use('/orders', orderRoutes);
 app.use('/orderItems', orderItemRoutes);
 app.use('/cart', cartRoutes);
 app.use('/stripe', stripeRoutes);
+app.use('/admin', adminAuthentication, adminRoutes);
 
 // app.use('/', emailRoutes);
 app.use("/api", emailRoutes);
