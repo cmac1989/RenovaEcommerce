@@ -1,6 +1,8 @@
 import React from 'react'
 import '../styles/homePage.css'
 import '../assets/images/hoodie2.png'
+import { NavLink } from 'react-router-dom'
+
 
 function Home() {
   const hoodieImg = require('../assets/images/hoodie2.png')
@@ -11,6 +13,7 @@ function Home() {
           <div className="text">
             <h1>RENOVA</h1>
             <p>Brand info cool modern streetwear comfy</p>
+            <NavLink to='/products' className="shop-now">SHOP NOW</NavLink>
           </div>
           <div className="image">
             <img src={hoodieImg} alt=""/>
