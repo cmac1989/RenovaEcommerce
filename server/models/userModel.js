@@ -11,13 +11,18 @@ const User = sequelize.define(
             primaryKey: true,
             autoIncrement: true,
         },
+        uuid: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+        },
         username: {
             type: DataTypes.STRING,
-            allowNull: false,
+            unique: true,
         },
+        //TODO might have to do something with validator field
         email: {
             type: DataTypes.STRING,
-            allowNull: false,
             unique: true,
             validate: {
                 isEmail: true,
@@ -25,7 +30,9 @@ const User = sequelize.define(
         },
         password: {
             type: DataTypes.STRING,
-            allowNull: false,
+        },
+        guest: {
+            type: DataTypes.TINYINT,
         },
         created_at: {
             type: DataTypes.DATE,

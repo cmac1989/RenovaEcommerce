@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const sequelize = require("../config/database");
 
-const Product = sequelize.define(
-    'Product',
+const GuestUser = sequelize.define(
+    "GuestUser",
     {
         id: {
             type: DataTypes.INTEGER,
@@ -10,29 +10,22 @@ const Product = sequelize.define(
             autoIncrement: true,
             primaryKey: true,
         },
-        name: {
+        session_token: {
             type: DataTypes.STRING,
             allowNull: false,
-        },
-        description: {
-            type: DataTypes.TEXT,
-        },
-        price: {
-            type: DataTypes.DECIMAL(10, 2),
-            allowNull: false,
+            unique: true,
         },
         created_at: {
             type: DataTypes.DATE,
-        },
-        updated_at: {
-            type: DataTypes.DATE,
         }
+
     },
 {
-    tableName: 'products',
+    tableName: 'guest_users',
     timestamps: true,
     underscored: true,
+    updatedAt: false,
     }
 )
 
-module.exports = Product;
+module.exports = GuestUser;
