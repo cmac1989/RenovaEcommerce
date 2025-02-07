@@ -1,14 +1,47 @@
-const db = require('../config/database');
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/database');
 
-const userModel = {
-    findByEmail: (email, callback) => {
-        const query = 'SELECT * FROM users WHERE email = ?';
-        db.query(query, [email], callback);
+const User = sequelize.define(
+    'User',
+    {
+        // Model attributes are defined here
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        username: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+            validate: {
+                isEmail: true,
+            },
+        },
+        password: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        created_at: {
+            type: DataTypes.DATE,
+        },
+        updated_at: {
+            type: DataTypes.DATE,
+        }
+
     },
-    create: (username, email, password, callback) => {
-        const query = 'INSERT INTO users (username, email, password) VALUES (?, ?, ?)';
-        db.query(query, [username, email, password], callback);
-    }
-};
+    {
+        // Other model options go here
+        tableName: 'users',
+        timestamps: true,
+        underscored: true,
+    },
+);
 
-module.exports = userModel;
+console.log(User === sequelize.models.User); // true
+module.exports = User;

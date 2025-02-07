@@ -33,21 +33,17 @@ exports.register = (req, res) => {
 exports.login = (req, res) => {
     const { email, password } = req.body;
 
-    console.log("route hit")
-    console.log(email, password);
-
     userModel.findByEmail(email, (err, result) => {
         if (err || result.length === 0) {
-            return res.status(400).json({ error: 'Invalid email or password' });
+            return res.status(400).json({ message: 'Invalid email or password' });
         }
 
         const user = result[0];
         const isMatch = bcrypt.compareSync(password, user.password);
         if (!isMatch) {
-            return res.status(400).json({error: 'Invalid email or password'});
+            return res.status(400).json({message: 'Invalid email or password'});
         }
         const token = jwt.sign({ userId: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        // res.json({ token });
-        return res.status(201).json({ message: 'User successfully logged in',token });
+        res.json({ token });
     });
 };

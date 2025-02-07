@@ -31,7 +31,7 @@ export const removeCartItem = (cartItem) => {
     console.log(`Attempting to delete /cart/${cartItem.cart_item_id}`);
     return API.delete(`/cart/${cartItem.cart_item_id}`, {
         data: {
-            product_id: cartItem.product_id,
+            product_id: cartItem.cart_item_id,
             quantity: cartItem.quantity,
         },
     });
