@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
+const ProductVariant = require('../models/productVariantModel');
 
 const Product = sequelize.define(
     'Product',
@@ -21,13 +22,6 @@ const Product = sequelize.define(
             type: DataTypes.DECIMAL(10, 2),
             allowNull: false,
         },
-        image: {
-            type: DataTypes.STRING,
-        },
-        stock_quantity: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
     },
 {
     tableName: 'products',
@@ -35,5 +29,12 @@ const Product = sequelize.define(
     underscored: true,
     }
 )
+//Make sure image is loaded after products are grabbed
+const Image = require('./productImageModel');
+//Define relationships
+Product.hasMany(Image,{foreignKey:'product_id', as: 'image', onDelete: 'CASCADE'});
+Image.belongsTo(Product, {foreignKey:'product_id', as: 'productVariant'});
+ProductVariant.belongsTo(Product, {foreignKey:'product_id', as: 'product'});
+
 
 module.exports = Product;

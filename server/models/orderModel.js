@@ -13,6 +13,10 @@ const Order = sequelize.define('order',
             type: DataTypes.INTEGER,
             foreignKey: 'user_id',
         },
+        guest_user_id: {
+            type: DataTypes.INTEGER,
+            foreignKey: 'guest_user_id',
+        },
         total_price: {
             type: DataTypes.DOUBLE,
             allowNull: false,
@@ -26,6 +30,12 @@ const Order = sequelize.define('order',
             ),
             allowNull: false,
         },
+        created_at: {
+            type: DataTypes.DATE,
+        },
+        updated_at: {
+            type: DataTypes.DATE,
+        }
     },
     {
         tableName: 'orders',
