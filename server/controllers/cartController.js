@@ -1,13 +1,16 @@
 const Cart = require('../models/cartModel');
-const User = require('../models/userModel');
+const ProductVariant = require('../models/productVariantModel');
 const Product = require('../models/productModel');
-const { Op } = require('sequelize');
+const Image = require('../models/ProductImageModel');
 
 exports.getAllCartItems = async (req, res) => {
     try {
-        const userId = req.user ? req.user.id : null;
+        //TODO make dynamic when authentication is set up
+        // const userId = req.user ? req.user.id : null;
+        const userId = 2
         console.log("User ID from JWT:", userId);
         if (!userId) {
+            console.log("no user id")
             return res.status(400).json({ error: 'User ID is required' });
         }
 
@@ -17,17 +20,32 @@ exports.getAllCartItems = async (req, res) => {
             where: { user_id: userId },
             include: [
                 {
-                    model: Product,
-                    as: 'product',
-                    attributes: ['id', 'name', 'description', 'price', 'image', 'stock_quantity'],
+                    model: ProductVariant,
+                    as: 'productVariant',
+                    attributes: ['id', 'product_id', 'color', 'size', 'stock_quantity', 'price'],
+                    //Join tables
+                    include: [
+                        {
+                            model: Product,
+                            as: 'product',
+                            attributes: ['id', 'name', 'description', 'price'],
+                            include: [
+                                {
+                                    model: Image,
+                                    as: 'image',
+                                    attributes: ['image_url', 'is_primary'],
+                                }
+                            ]
+                        }
+
+                    ]
                 }
             ],
             attributes: ['id', 'quantity', 'createdAt', 'updatedAt']
         });
-
-        console.log("Cart Items from DB:", JSON.stringify(cartItems, null, 2)); // Debug log
-
+        //Check if cart is empty
         if (!cartItems.length) {
+            console.log('no items in the cart')
             return res.status(200).json([]);
         }
         res.status(200).json(cartItems);
@@ -36,8 +54,6 @@ exports.getAllCartItems = async (req, res) => {
         res.status(500).json({ error: 'Error fetching cart items' });
     }
 };
-
-
 // Get a single cart item by ID
 exports.getCartItem = async (req, res) => {
     try {
@@ -46,7 +62,6 @@ exports.getCartItem = async (req, res) => {
         if (!userId || !cartItemId) {
             return res.status(400).json({ error: 'User ID and Cart Item ID are required' });
         }
-
         const cartItem = await Cart.findOne({ where: { id: cartItemId, user_id: userId } });
         if (!cartItem) {
             return res.status(404).json({ error: 'Cart item not found' });
@@ -62,13 +77,18 @@ exports.getCartItem = async (req, res) => {
 // Add or update a cart item
 exports.addCartItem = async (req, res) => {
     try {
-        const user_id = req.user ? req.user.id : null;
-        const { product_id, quantity } = req.body;
-        if (!user_id || !product_id || !quantity) {
+        //TODO make user_id dynamic once authentication is set up
+        // const user_id = req.user ? req.user.id : null;
+        const user_id = 2
+        const { product_variant_id, quantity } = req.body;
+        console.log(product_variant_id);
+        console.log(user_id)
+        console.log(quantity)
+        if (!user_id || !product_variant_id || !quantity) {
             return res.status(400).json({ error: 'Missing required fields' });
         }
 
-        const existingItem = await Cart.findOne({ where: { user_id, product_id } });
+        const existingItem = await Cart.findOne({ where: { user_id, product_variant_id } });
 
         if (existingItem) {
             existingItem.quantity += quantity;
@@ -76,7 +96,7 @@ exports.addCartItem = async (req, res) => {
             return res.status(200).json({ message: 'Item quantity updated', cartItemId: existingItem.id });
         }
 
-        const newItem = await Cart.create({ user_id, product_id, quantity });
+        const newItem = await Cart.create({ user_id, product_variant_id, quantity });
         res.status(201).json({ message: 'Item added to cart', cartItemId: newItem.id });
     } catch (error) {
         console.error('Error adding item to cart:', error);
@@ -87,10 +107,13 @@ exports.addCartItem = async (req, res) => {
 // Remove cart item or decrease quantity
 exports.removeCartItem = async (req, res) => {
     try {
-        const user_id = req.user.id;
+        //TODO change to dynamic user_id
+        const user_id = 2
+        // const user_id = req.user.id;
         const cart_item_id  = req.params.cart_item_id;  // Get from URL
 
         const { product_id, quantity } = req.body;
+        console.log(user_id)
         console.log(product_id);
         console.log(quantity);
         console.log(cart_item_id);
@@ -99,6 +122,7 @@ exports.removeCartItem = async (req, res) => {
         }
 
         const cartItem = await Cart.findOne({ where: { user_id, id: cart_item_id} });
+        console.log(cartItem);
         if (!cartItem) {
             return res.status(404).json({ error: 'Product not found in cart' });
         }
