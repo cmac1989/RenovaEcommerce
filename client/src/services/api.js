@@ -48,6 +48,7 @@ export const getCartItems = async () => {
         // console.log('Token before request:', token);
         const response = await API.get('/cart'
         );
+        console.log(response);
         return response.data;  // Return cart data from the server
 
     } catch (error) {

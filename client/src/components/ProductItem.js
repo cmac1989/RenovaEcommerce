@@ -13,8 +13,10 @@ function ProductItem() {
     const { updateCartQuantity } = useCart();  // Get the update function from context
 
     useEffect(() => {
+        console.log(products)
         getProducts()
             .then((response) => {
+                console.log(response.data[0].image[0]);
                 setProducts(response.data);
                 setTimeout(() => setLoading(false), 100);  // Show spinner for 200ms
             })
@@ -27,10 +29,11 @@ function ProductItem() {
     const addToCartHandler = (product) => {
         const productData = {
             //TODO change user_id to something more dynamic
-            user_id: 1,  // Simulating logged-in user ID
-            product_id: product.id,
+            user_id: 2,  // Simulating logged-in user ID
+            product_variant_id: product.id,
             quantity: 1,
         };
+        console.log(productData);
         addProduct(productData)
             .then(() => {
                 // Update the cart quantity both in context and localStorage
@@ -39,10 +42,11 @@ function ProductItem() {
                 updateCartQuantity(newQuantity);  // Update context
                 localStorage.setItem('cartQuantity', newQuantity);  // Persist in localStorage
                 //Set content for modal
+                console.log(product.image[0].image_url);
                 setModalContent({
                     title: "Product Added to Cart",
                     message: `${product.name} has been successfully added to your cart.`,
-                    image: `/images/${product.image}`,
+                    image: `/images/${product.image[0].image_url}`,
                 });
                 setShowModal(true)
             })
@@ -64,7 +68,12 @@ function ProductItem() {
         <ul className="productList">
             {products.map((product) => (
                 <li key={product.id} className="productItem">
-                    <img src={`/images/${product.image}`} alt={product.name} />
+                        {/*if product contains more than one image grab the first - otherwise grab default*/}
+                    <img
+                        // src={product.images?.length > 0 ? `/images/${product.images[0].image_url}` : '/images/default.jpg'}
+                        src={`images/${product.image[0].image_url}`}
+                        alt={product.product_name}
+                    />
                     <div className="productName">
                         <h3>{product.name}</h3>
                     </div>
