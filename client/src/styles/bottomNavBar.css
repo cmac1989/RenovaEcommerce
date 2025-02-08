@@ -1,0 +1,29 @@
+.bottomNav {
+    display: none;
+    height: 60px;
+    border-top: 1px solid rgb(70, 70, 70);
+    position: sticky;
+    bottom: 0;
+    background-color: var(--bg);
+}
+
+.bottomNav a {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+    padding-top: 15px;
+
+    text-decoration: none;
+    color: var(--text);
+}
+
+.bottomNav a:hover {
+    color: #7b7b7b;
+}
+
+@media screen and (max-width: 780px) {
+    .bottomNav {
+        display: flex;
+        justify-content: space-around;
+    }
+}

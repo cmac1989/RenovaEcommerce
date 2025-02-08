@@ -1,3 +1,7 @@
+div.products-page{
+    min-height: calc(100dvh - 80px);
+}
+
 div.products-page h1 {
     padding: 0 80px;
 }
@@ -22,6 +26,7 @@ div.products-page h1 {
     margin: 10px;
     border-radius: 10px;
     box-shadow: 2px 3px 10px rgb(87, 85, 85);
+    color: var(--text);
 }
 
 .productItem img {
@@ -41,7 +46,6 @@ div.products-page h1 {
 
 .productPrice {
     padding: 5px;
-    color: rgb(48, 47, 47);
     margin-bottom: 5px;
 }
 
