@@ -65,3 +65,5 @@ const ShippingAddress = sequelize.define('ShippingAddress', {
         updatedAt: false,
     }
 )
+
+module.exports = ShippingAddress;

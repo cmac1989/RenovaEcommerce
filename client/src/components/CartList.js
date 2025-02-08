@@ -13,19 +13,23 @@ function CartList() {
     const { updateCartQuantity } = useCart();
 
     useEffect(() => {
+        console.log(cartItems);
         // Fetch cart items when the component mounts
         getCartItems()
             .then((response) => {
+                // console.log(response[0].item.productVariant.product.image.img_url);
+                console.log(response[0].productVariant.product.id);
                 const formattedItems = response.map((item) => ({
                     cart_item_id: item.id,
                     quantity: item.quantity,
-                    product_name: item.product.name,
-                    product_price: parseFloat(item.product.price),
-                    product_description: item.product.description,
-                    product_image: item.product.image
+                    product_id: item.productVariant.product.id,
+                    product_name: item.productVariant.product.name,
+                    product_price: parseFloat(item.productVariant.product.price),
+                    product_description: item.productVariant.product.description,
+                    product_image: item.productVariant.product.image[0].image_url
                 }));
                 setCartItems(formattedItems);  // Store items in state
-
+                console.log(cartItems)
                 // Set a delay so the spinner stays visible for at least 1 second
                 setTimeout(() => {
                     setLoading(false);
@@ -38,7 +42,7 @@ function CartList() {
     }, []);
 
     const removeFromCartHandler = (item) => {
-        console.log(item);
+        console.log(`removing item ${item}`);
         setShowModal(true);
         setModalContent({
             title: `Removed ${item.product_name}`,
@@ -48,14 +52,18 @@ function CartList() {
         // If the quantity is greater than 1, decrease the quantity
         if (item.quantity > 1) {
             const updatedQuantity = item.quantity - 1;
+            console.log(item)
+            console.log(item.quantity)
             console.log(item.cart_item_id)
             console.log(item.product_id)
+            // console.log(item.productVariant.id)
             console.log(item.quantity)
 
             // Call the API to update the quantity
             removeCartItem({
                 cart_item_id: item.cart_item_id,
-                product_id: item.cart_item_id,
+                // product_id: item.cart_item_id,
+                product_id: item.productVariant?.id || item.product_id,
                 quantity: 1, // Decrease by 1
             })
                 .then(() => {

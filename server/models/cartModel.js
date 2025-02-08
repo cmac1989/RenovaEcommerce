@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const User = require('./userModel');
-const Product = require('./productModel');
+const ProductVariant = require('./productVariantModel');
 
 const Cart = sequelize.define('cart',
         {
@@ -22,7 +22,7 @@ const Cart = sequelize.define('cart',
         product_variant_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            foreignKey: 'product_id',
+            foreignKey: 'product_variant_id',
         },
         quantity: {
             type: DataTypes.INTEGER,
@@ -36,8 +36,11 @@ const Cart = sequelize.define('cart',
             underscored: true,
         }
     )
+//Define relationships
 Cart.belongsTo(User, {foreignKey: 'user_id', as: 'user'})
-Cart.belongsTo(Product, {foreignKey: 'product_id', as: 'product'})
+User.hasMany(Cart, {foreignKey: 'user_id', as: 'cart'})
+Cart.belongsTo(ProductVariant, {foreignKey: 'product_variant_id', as: 'productVariant'})
+ProductVariant.hasMany(Cart, {foreignKey: 'product_variant_id', as: 'productVariant'})
 
 module.exports = Cart;
 
