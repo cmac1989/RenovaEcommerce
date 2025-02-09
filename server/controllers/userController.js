@@ -3,15 +3,31 @@ const jwt = require('jsonwebtoken');
 const userModel = require('../models/userModel');
 
 exports.register = (req, res) => {
-    const { email, password } = req.body;
-    const hashedPassword = bcrypt.hashSync(password, 10);
+    const { email, password, username } = req.body;
+    
+    if (!email || !password || !username) {
+        return res.status(400).json({ error: 'Missing credentials' });
+    }
 
-    userModel.create(email, hashedPassword, (err, result) => {
+    userModel.findByEmail(email, (err, result) => {
         if (err) {
-            return res.status(500).json({ error: 'Error registering user' });
+            return res.status(500).json({ error: "Error checking email" });
         }
-        res.status(201).json({ message: 'User registered successfully' });
-    });
+
+        if (result.length > 0) {
+            return res.status(400).json({ error: "Email is already registered" });
+        }
+
+        const hashedPassword = bcrypt.hashSync(password, 10);
+
+        userModel.create(username, email, hashedPassword, (err, result) => {
+            if (err) {
+                return res.status(500).json({ error: 'Error registering user' });
+            }
+            return res.status(201).json({ message: 'User registered successfully' });
+        });
+        
+    })
 };
 
 exports.login = (req, res) => {

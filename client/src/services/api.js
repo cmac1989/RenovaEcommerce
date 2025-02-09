@@ -37,6 +37,16 @@ export const removeCartItem = (cartItem) => {
     });
 };
 
+export const addUser = (email,password,username) => {
+    console.log("Attempting to register a new user");
+    return API.post(`/user/register`, {email,password,username});
+}
+
+export const loginUser = (email,password) => {
+    console.log("Attempting to login user");
+    return API.post(`/user/login`,{email,password})
+}
+
 
 export const getCartItems = async () => {
     try {
