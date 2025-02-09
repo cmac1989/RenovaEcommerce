@@ -13,6 +13,16 @@ function ProductItem() {
     const [modalContent, setModalContent] = useState({});
     const { updateCartQuantity } = useCart();  // Get the update function from context
 
+    const [value, setValue] = useState(1);
+
+    const increment = () => setValue(prev => Math.min(prev + 1, 9));
+    const decrement = () => setValue(prev => Math.max(prev - 1, 1));
+    const validateInput = (e) => {
+        let newValue = e.target.value.replace(/[^0-9]/g, "");
+        newValue = newValue === "" ? 1 : Math.min(Math.max(parseInt(newValue), 1), 9);
+        setValue(newValue);
+    };
+
     useEffect(() => {
         console.log(products)
         getProducts()
@@ -32,14 +42,14 @@ function ProductItem() {
             //TODO change user_id to something more dynamic
             user_id: 2,  // Simulating logged-in user ID
             product_variant_id: product.id,
-            quantity: 1,
+            quantity: value,
         };
         console.log(productData);
         addProduct(productData)
             .then(() => {
                 // Update the cart quantity both in context and localStorage
                 let currentQuantity = parseInt(localStorage.getItem('cartQuantity'), 10) || 0;
-                const newQuantity = currentQuantity + 1;
+                const newQuantity = currentQuantity + productData.quantity;
                 updateCartQuantity(newQuantity);  // Update context
                 localStorage.setItem('cartQuantity', newQuantity);  // Persist in localStorage
                 //Set content for modal
@@ -69,7 +79,7 @@ function ProductItem() {
         <ul className="productList">
             {products.map((product) => (
                 <li key={product.id} className="productItem">
-                        {/*if product contains more than one image grab the first - otherwise grab default*/}
+                    {/*if product contains more than one image grab the first - otherwise grab default*/}
                     <img
                         // src={product.images?.length > 0 ? `/images/${product.images[0].image_url}` : '/images/default.jpg'}
                         src={`images/${product.image[0].image_url}`}
@@ -85,7 +95,42 @@ function ProductItem() {
                     {/* <button className="add-to-cart-btn" onClick={() => addToCartHandler(product)}>
                         Add to Cart
                     </button> */}
-                <Button onClick={() => addToCartHandler(product)}>Add to Cart</Button>
+
+
+                    <div style={{
+                        display: "flex",
+                        alignItems: "center",
+                        border: "2px solid #333",
+                        borderRadius: "8px",
+                        width: "120px",
+                        overflow: "hidden"
+                    }}>
+                        <button onClick={decrement} style={{
+                            background: "#333",
+                            color: "white",
+                            border: "none",
+                            padding: "5px 10px",
+                            cursor: "pointer"
+                        }}>-
+                        </button>
+                        <input
+                            type="text"
+                            min="0"
+                            max="9"
+                            value={value}
+                            onChange={validateInput}
+                            style={{width: "50px", textAlign: "center", border: "none", outline: "none"}}
+                        />
+                        <button onClick={increment} style={{
+                            background: "#333",
+                            color: "white",
+                            border: "none",
+                            padding: "5px 10px",
+                            cursor: "pointer"
+                        }}>+
+                        </button>
+                    </div>
+                    <Button onClick={() => addToCartHandler(product)}>Add to Cart</Button>
                 </li>
             ))}
         </ul>
@@ -96,7 +141,7 @@ function ProductItem() {
                 message={modalContent.message}
                 image={modalContent.image}
             />
-    </div>
+        </div>
     );
 }
 
