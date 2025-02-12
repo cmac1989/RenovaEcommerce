@@ -14,7 +14,7 @@ function ProductItem() {
     const { updateCartQuantity } = useCart();  // Get the update function from context
 
     const [value, setValue] = useState(1);
-
+    //used to increment and decrement the quantity value
     const increment = () => setValue(prev => Math.min(prev + 1, 9));
     const decrement = () => setValue(prev => Math.max(prev - 1, 1));
     const validateInput = (e) => {
@@ -22,6 +22,7 @@ function ProductItem() {
         newValue = newValue === "" ? 1 : Math.min(Math.max(parseInt(newValue), 1), 9);
         setValue(newValue);
     };
+    const user_id = localStorage.getItem('user_id');
 
     useEffect(() => {
         console.log(products)
@@ -39,8 +40,8 @@ function ProductItem() {
 
     const addToCartHandler = (product) => {
         const productData = {
-            //TODO change user_id to something more dynamic
-            user_id: 2,  // Simulating logged-in user ID
+            //TODO grab from another way than from local storage??? for now store user_id in local storage on login/sign up
+            user_id: user_id,  // Simulating logged-in user ID
             product_variant_id: product.id,
             quantity: value,
         };
