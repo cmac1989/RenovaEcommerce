@@ -47,6 +47,28 @@ export const loginUser = (email,password) => {
     return API.post(`/user/login`,{email,password})
 }
 
+export const createGuestUser = async (session_token,expiry) => {
+    console.log("Attempting to register a new guest user");
+    //TODO fixme
+    return API.post(`/guest/register`, {session_token, expiry})
+}
+
+export const getGuestUser = async () => {
+    const guestUserId = localStorage.getItem('guestUserId');  // Retrieve guestUserId
+    if (!guestUserId) {
+        console.warn("No guest user ID found in localStorage.");
+        return null;
+    }
+
+    try {
+        const response = await API.get(`/guest/${guestUserId}`);  // Fetch guest user by ID
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching guest user:', error);
+        return null;
+    }
+};
+
 
 export const getCartItems = async () => {
     try {

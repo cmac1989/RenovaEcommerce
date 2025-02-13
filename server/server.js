@@ -10,6 +10,7 @@ const orderItemRoutes = require('./routes/orderItem');
 const cartRoutes = require('./routes/cart');
 const stripeRoutes = require('./routes/stripe')
 const emailRoutes = require('./mail/email');
+const guestRoutes = require('./routes/userGuest');
 
 const adminAuthentication = require('./middleware/adminMiddleware')
 const adminRoutes = require('./routes/admin')
@@ -73,6 +74,8 @@ app.get('/auth', (req, res) => {
 
 // Routes
 app.use('/user', userRoutes);
+
+app.use('/guest', guestRoutes);
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
 app.use('/orderItems', orderItemRoutes);
@@ -101,6 +104,7 @@ app.use((req, res, next) => {
 });
 
 // Start the server
+// connectDB();
 const PORT = process.env.PORT || 3306;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
