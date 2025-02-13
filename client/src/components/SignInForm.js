@@ -5,6 +5,7 @@ import { Button } from "./Button";
 import { Link, useNavigate } from "react-router";
 import { Input } from "./Input";
 import { loginUser } from "../services/api";
+import Spinner from '../components/Spinner';
 
 export default function SignInForm() {
   const [formData, setFormData] = useState({
@@ -13,6 +14,8 @@ export default function SignInForm() {
   });
 
   const [validated, setValidated] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -47,14 +50,16 @@ export default function SignInForm() {
 
     if (validateForm()) {
       try {
+        setIsLoading(true);
         const response = await loginUser(formData.email, formData.password);
         const data = response.data;
-        console.dir(data);
         setFormData({ email: "", password: "" });
         setServerMessage(data.message);
+        setIsLoading(false);
         // navigate("/");
         
       } catch (err) {
+        setIsLoading(false);
         if (err.response) {
           setServerMessage(err.response.data.error);
         } else {
@@ -113,12 +118,12 @@ export default function SignInForm() {
           {/* {errors.password && <span>{errors.password}</span>} */}
           <span className={`${errors.password ? '' : 'hidden'}`}>{errors.password}</span>
         </Form.Group>
-        <Button type={"submit"}>log in</Button>
+        <Button isDisabled={isLoading} type={"submit"}>log in</Button>
         <p className="link-to-signup">NO ACCOUNT? <Link className="accent" to={"/signUp"}>SIGN UP</Link></p>
         {/* <Button variant="primary" type="submit">
           Submit
         </Button> */}
-         <p>{serverMessage}</p>
+        {isLoading ? <Spinner/> : <p>{serverMessage}</p>}
         
       </Form>
 
