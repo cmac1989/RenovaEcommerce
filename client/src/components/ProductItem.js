@@ -70,8 +70,11 @@ function ProductItem() {
     if (loading) {
         //TODO put styles in external stylesheet
         return (
-            <div className="product-list" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "60vh" }}>
-                <Spinner />
+            // <div className="product-list" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "60vh",backgroundColor:"red" }}>
+            //     <Spinner />
+            // </div>
+            <div className='spinner-container'>
+                <Spinner/>
             </div>
         );
     }

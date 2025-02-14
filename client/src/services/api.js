@@ -37,9 +37,9 @@ export const removeCartItem = (cartItem) => {
     });
 };
 
-export const addUser = (email,password,username) => {
+export const addUser = (email,password,username,uuid) => {
     console.log("Attempting to register a new user");
-    return API.post(`/user/register`, {email,password,username});
+    return API.post(`/user/register`, {email,password,username,uuid});
 }
 
 export const loginUser = (email,password) => {
