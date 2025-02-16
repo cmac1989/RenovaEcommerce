@@ -1,8 +1,12 @@
 const jwt = require('jsonwebtoken');
 
 const authenticateJWT = (req, res, next) => {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
+    let token = req.header('Authorization')?.replace('Bearer ', '');
     console.log("Received token:", token);
+    if(!token) {
+        console.warn("No token in Authorization header. Checking cookies...");
+        token = req.cookies.jwt;
+    }
 
     if (!token) {
         console.warn("No token provided. Proceeding as unauthenticated user.");
@@ -22,14 +26,15 @@ const authenticateJWT = (req, res, next) => {
             return res.status(403).json({ error: 'Invalid or expired token' });
         }
 
-        console.log("Decoded JWT:", decodedToken);
+        // console.log("Decoded JWT:", decodedToken);
+        // console.log("Decoded JWT:", decodedToken.userId);
 
         // Ensure the token contains a valid user ID before attaching it to the request
-        if (!decodedToken.id) {
+        if (!decodedToken.userId) {
             return res.status(400).json({ error: 'Invalid token structure' });
         }
 
-        req.user = decodedToken;  // Assign decoded user to req.user
+        req.user = decodedToken.userId;  // Assign decoded user to req.user
         next();
     });
 };

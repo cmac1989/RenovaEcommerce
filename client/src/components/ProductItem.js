@@ -5,6 +5,7 @@ import Spinner from '../components/Spinner';
 import '../styles/productsPage.css';
 import ProductModal from "./ProductModal";
 import { Button } from "../components/Button";
+import {useUser} from "../providers/UserContext";
 
 function ProductItem() {
     const [products, setProducts] = useState([]);
@@ -12,6 +13,8 @@ function ProductItem() {
     const [showModal, setShowModal] = useState(false);
     const [modalContent, setModalContent] = useState({});
     const { updateCartQuantity } = useCart();  // Get the update function from context
+    const { user } = useUser();
+    console.log('userID: ', user);
 
     const [value, setValue] = useState(1);
     //used to increment and decrement the quantity value
@@ -22,7 +25,7 @@ function ProductItem() {
         newValue = newValue === "" ? 1 : Math.min(Math.max(parseInt(newValue), 1), 9);
         setValue(newValue);
     };
-    const user_id = localStorage.getItem('user_id');
+    const user_id = user;
 
     useEffect(() => {
         console.log(products)
@@ -41,7 +44,7 @@ function ProductItem() {
     const addToCartHandler = (product) => {
         const productData = {
             //TODO grab from another way than from local storage??? for now store user_id in local storage on login/sign up
-            user_id: user_id,  // Simulating logged-in user ID
+            user_id: user_id,
             product_variant_id: product.id,
             quantity: value,
         };
@@ -52,7 +55,7 @@ function ProductItem() {
                 let currentQuantity = parseInt(localStorage.getItem('cartQuantity'), 10) || 0;
                 const newQuantity = currentQuantity + productData.quantity;
                 updateCartQuantity(newQuantity);  // Update context
-                localStorage.setItem('cartQuantity', newQuantity);  // Persist in localStorage
+                // localStorage.setItem('cartQuantity', newQuantity);  // Persist in localStorage
                 //Set content for modal
                 console.log(product.image[0].image_url);
                 setModalContent({

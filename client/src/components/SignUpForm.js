@@ -57,7 +57,7 @@ export default function SignUpForm() {
     if (validateForm()) {
       try {
         setIsLoading(true);
-        const response = await addUser(formData.email, formData.password, formData.username,uuidv4());
+        const response = await addUser(uuidv4(), formData.username, formData.email, formData.password);
         const data = response.data;
         setFormData({ email: "", password: "", username: "" });
         setServerMessage(data.message);
@@ -67,13 +67,10 @@ export default function SignUpForm() {
         if (err.response) {
           setServerMessage(err.response.data.error);
         } else {
-          console.log(err.response.data.error); 
+          // console.log(err.response.data.error);
+          console.log(err)
         }
-     
-        
       }
-
-      
     } else {
       console.log("form errors");
     }
