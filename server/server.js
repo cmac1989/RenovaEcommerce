@@ -16,6 +16,7 @@ const adminAuthentication = require('./middleware/adminMiddleware')
 const adminRoutes = require('./routes/admin')
 
 const sequelize = require('./config/database');
+const cookieParser = require('cookie-parser')
 
 require('dotenv').config();
 
@@ -24,7 +25,26 @@ const app = express();
 // db.connect();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000',  // Allow frontend domain
+    credentials: true,  // Allow cookies & authentication headers
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow these methods
+    allowedHeaders: ['Content-Type', 'Authorization'],  // Allow these headers
+}));
+
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Credentials", "true"); // Ensure cookies are allowed
+    next();
+});
+
+app.use((req, res, next) => {
+    console.log(`📩 Incoming Request: ${req.method} ${req.url}`);
+    console.log("Cookies:", req.cookies);
+    next();
+});
+
+app.use(express.json());
+app.use(cookieParser());
 
 // Only apply the bodyParser.json if it is not the Stripe webhook route as the Stripe webhook needs the raw
 // body for verification
@@ -37,8 +57,6 @@ app.use((request, response, next)=>{
         bodyParser.json()(request, response, next)
     }
 })
-
-app.use(cors({ origin: '*' }));
 
 const oauth2Client = new google.auth.OAuth2(
     process.env.CLIENT_ID,   // Client ID from Google Developer Console
@@ -57,24 +75,8 @@ app.get('/auth', (req, res) => {
     res.redirect(url);
 });
 
-// Handle OAuth2 callback
-// app.get('/oauth2callback', async (req, res) => {
-//     const code = req.query.code;  // Extract the authorization code from the query parameters
-//     try {
-//         const { tokens } = await oauth2Client.getToken(code);  // Exchange code for tokens
-//         console.log('Raw Token Response:', tokens);
-//         oauth2Client.setCredentials(tokens);
-//         res.send('Authorization successful! Tokens received.');
-//         // You can now store the tokens or use them to send emails.
-//     } catch (error) {
-//         res.send('Error while trying to retrieve access token.');
-//         console.error(error);
-//     }
-// });
-
 // Routes
 app.use('/user', userRoutes);
-
 app.use('/guest', guestRoutes);
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
@@ -82,8 +84,6 @@ app.use('/orderItems', orderItemRoutes);
 app.use('/cart', cartRoutes);
 app.use('/stripe', stripeRoutes);
 app.use('/admin', adminAuthentication, adminRoutes);
-
-// app.use('/', emailRoutes);
 app.use("/api", emailRoutes);
 
 
